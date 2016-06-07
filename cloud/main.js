@@ -962,4 +962,13 @@ Parse.Cloud.define("sendMessages", function(request, response) {
   	//console.log("OK MESSAGE SAND");
   	//response.success("OK MESSAGE SAND");
 
+}
+
+
+
+Parse.Cloud.define('hello', function(req, res) {
+  res.success('Hi');
 });
+
+
+);
