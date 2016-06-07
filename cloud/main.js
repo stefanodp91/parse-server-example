@@ -1,7 +1,7 @@
 
 //require('cloud/jobs');
 // Use Parse.Cloud.define to define as many cloud functions as you want.
-var client = require('cloud/myMailModule-1.0.0.js');
+var client = require(__dirname + '/cloud/myMailModule-1.0.0.js');
 client.initialize('sandboxd4c1fff0eef345918700b3f7763ea660.Mailgun.Org', 'key-eb5c861840c9606f6e8cdb6905e7d66b');
 //Then inside of your Cloud Code function, you can use the sendEmail function to fire off some emails:
 
