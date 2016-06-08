@@ -548,7 +548,7 @@ function sendAllMessage(request){
 	var arrayAllEmailTo = new Array;
 	var functionGetAddressesEmail;
 	
-    Parse.Cloud.useMasterKey();
+   // Parse.Cloud.useMasterKey();
 	var listFunctionsToCall = [];
 	//results1
 	var functionGetEmailTemplates = getEmailTemplates(lang,type);
