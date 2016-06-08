@@ -5,7 +5,7 @@ var client = require(__dirname + '/myMailModule-1.0.0.js');
 client.initialize('sandboxd4c1fff0eef345918700b3f7763ea660.Mailgun.Org', 'key-eb5c861840c9606f6e8cdb6905e7d66b');
 //Then inside of your Cloud Code function, you can use the sendEmail function to fire off some emails:
 
-s
+
 /* SEND EMAIL
 //----------------------------------------------//
 // ELENCO TIPOLOGIE EMAIL
