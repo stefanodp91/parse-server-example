@@ -1033,4 +1033,4 @@ Parse.Cloud.define('testquery3', function(req, res) {
 	
 	console.log("testquery3 end");
   });
-});
+
