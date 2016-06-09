@@ -66,7 +66,7 @@ function getRequestDetail(idListForms){
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
 	var myres = query.first();
-	console.log("getRequestDetail: " + JSON.stringfy(myres));
+	console.log("getRequestDetail: " + myres);
 	return myres;
 }
 
@@ -78,7 +78,7 @@ function getOfferDetail(idListOffers){
 		query.equalTo("objectId", idListOffers);
 		query.include('idUserResponder');
 		var myres = query.first();
-		console.log("getOfferDetail: " + JSON.stringfy(myres));
+		console.log("getOfferDetail: " + myres);
 		return myres;
 	}
 	return;
@@ -95,7 +95,9 @@ function getListAllEmailProfessional(){
 	query.exists('idProfessional');
 	query.include('idProfessional');
 	*/
-	return query.find();
+	var myres = query.find();
+	console.log("getListAllEmailProfessional : "+ myres);
+	return myres;
 }
 
 function getListEmailProfessionalSentOffer(idListForms){
