@@ -582,6 +582,10 @@ function sendAllMessage(request){
 		function(results1, objectRequest, objectOffer, results4){
 			"use strict";
 			console.log("listFunctionsToCall");
+			console.log("results1: " + results1 );
+			console.log("objectRequest: " + objectRequest );
+			console.log("objectOffer: " + objectOffer );  
+			console.log("results4: " + results4 );  
 			//------------------------------------------------------//
 			// START SET VARIABLES
 			//------------------------------------------------------//
@@ -596,6 +600,8 @@ function sendAllMessage(request){
 			for (i = 0; i < results1.length; i++) {
 				arrayEmailTemplate.push(results1[i]);
 			}
+		
+				
 			for (i = 0; i < results4.length; i++) {
 				arrayAllEmailTo.push(results4[i]);
 			}	
@@ -650,6 +656,7 @@ function sendAllMessage(request){
 					arrayNwString.push(PRICE_OFFER);
 				}
 			}
+			console.log("arrayEmailTemplate");  
 			//console.log("\n job1: "+arrayEmailTemplate);  
 			//console.log("\n job2: "+userSenderClient); 
 			//------------------------------------------------------//
