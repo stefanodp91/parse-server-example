@@ -1018,3 +1018,19 @@ Parse.Cloud.define('testquery2', function(req, res) {
     }
   });
 });
+
+
+
+
+Parse.Cloud.define('testquery3', function(req, res) {
+ 	console.log("testquery3");
+	var myfunc = [];
+	myfunc.push(console.log("test1"));
+	myfunc.push(console.log("test2"));
+	Parse.Promise.when(myfunc).then(function() {
+		console.log("test3");
+	});
+	
+	console.log("testquery3 end");
+  });
+});
