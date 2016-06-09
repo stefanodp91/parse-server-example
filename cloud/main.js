@@ -275,6 +275,9 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	arrayReplaceString.push(replaceString(bodyEmail));	
 	Parse.Promise.when(arrayReplaceString).then(
 	function(results) {
+		config.log("results");
+		config.log(results);
+		
 		var nwSubjectEmail = results[0];
 		console.log("nwSubjectEmail :");
 		console.log(nwSubjectEmail);
