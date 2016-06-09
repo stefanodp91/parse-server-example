@@ -970,3 +970,9 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
 });
+
+
+Parse.Cloud.define('testquery', function(req, res) {
+ 	var query = new Parse.Query("EmailConfig");
+	return query.find();
+});
