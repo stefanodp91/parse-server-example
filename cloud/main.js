@@ -568,7 +568,7 @@ function sendAllMessage(request){
 	listFunctionsToCall.push(functionGetRequestDetail);
 	//results3
 	var functionGetOfferDetail = getOfferDetail(idListOffers);
-	listFunctionsToCall.push(functionGetOfferDetail);
+	listFunctionsToCall.push( functionGetOfferDetail);
 	//results4
 	if(type === TYPE_NEW_REQUEST ){
 		console.log("TYPE_NEW_REQUEST");
@@ -924,7 +924,11 @@ function sendAllMessage(request){
 			});	
 			*/
 			
-	});
+	}, 
+	function(error) {
+		console.log("error on promise: "+ error );
+	}
+	);
 	
 }		
 
@@ -1028,7 +1032,7 @@ Parse.Cloud.define('testquery2', function(req, res) {
 Parse.Cloud.define('testquery3', function(req, res) {
  	console.log("testquery3");
 	var myfunc = [];
-	myfunc.push(console.log("test1"));
+	myfunc.push(function(){console.log("test1")});
 	myfunc.push(console.log("test2"));
 	Parse.Promise.when(myfunc).then(function() {
 		console.log("test3");
