@@ -578,7 +578,8 @@ function sendAllMessage(request){
 	console.log("after functionGetRequestDetail");
 	
 	Parse.Promise.when(functionGetRequestDetail).then(function(result) {
-		console.log("result of functionGetRequestDetail : "+ result);
+		console.log("result of functionGetRequestDetail : ");
+		console.log(result);
 	});
 	
 	listFunctionsToCall.push(functionGetRequestDetail);
