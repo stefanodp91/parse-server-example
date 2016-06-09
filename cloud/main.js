@@ -984,3 +984,18 @@ Parse.Cloud.define('testquery', function(req, res) {
     }
   });
 });
+
+
+
+Parse.Cloud.define('testquery2', function(req, res) {
+ 	var query = new Parse.Query("EmailConfig");
+ 	query.limit(1); 
+	query.find({
+    success: function(results) {
+    	res.success(results);
+    },
+    error: function() {
+      res.error("movie lookup failed2");
+    }
+  });
+});
