@@ -70,7 +70,7 @@ function getRequestDetail(idListForms){
     		console.log(results);
 	    },
 	    error: function(error) {
-	      console.log((error);
+	      console.log(error);
 	    }
 	    });
     
