@@ -409,6 +409,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	var targetUser = new Parse.User();
 	targetUser.id = idTo;
 	pushQuery.equalTo("user", targetUser);
+/*
 	Parse.Push.send(
 	{
 		where: pushQuery,
@@ -431,7 +432,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 		error: function (error) {
 			response.error(error);
 		}
-	});
+	});*/
 });
 
 
