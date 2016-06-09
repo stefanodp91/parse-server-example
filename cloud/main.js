@@ -1090,3 +1090,32 @@ Parse.Cloud.define('testquery3', function(req, res) {
 	console.log("testquery3 end");
   });
 
+
+Parse.Cloud.define('testnotify', function(req, res) {
+	var query = new Parse.Query(Parse.Installation);
+	query.equalTo('objectid', "sXhAwcVeLX");
+
+Parse.Push.send(
+	{
+		where: query,
+		data: {
+			to: "sXhAwcVeLX",
+			//t: "chat", // type
+			idListForms: "WNSbHDmE7u",
+			//badge: badge,
+			alert: "ciao",
+			sound: "chime",
+			title: "title",
+			type: "TYPE_NEW_REQUEST",
+			idUserRequest: "sXhAwcVeLX"
+		}
+	},
+	{
+		success: function(){
+			response.success('notification sent');
+		},
+		error: function (error) {
+			response.error(error);
+		}
+	});
+});
