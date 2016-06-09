@@ -1092,6 +1092,7 @@ Parse.Cloud.define('testquery3', function(req, res) {
 
 
 Parse.Cloud.define('testnotify', function(req, res) {
+	console.log("testnotify");
 	var query = new Parse.Query(Parse.Installation);
 	query.equalTo('objectid', "sXhAwcVeLX");
 
@@ -1118,4 +1119,5 @@ Parse.Push.send(
 			response.error(error);
 		}
 	});
+	console.log("testnotify end");
 });
