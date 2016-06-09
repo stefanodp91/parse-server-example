@@ -67,9 +67,11 @@ function getRequestDetail(idListForms){
 	query.include('idUserRequest');
 	var myres = query.first({
 	  success: function(results) {
+	  	console.log("getRequestDetail.success");
     		console.log(results);
 	    },
 	    error: function(error) {
+	    console.log("getRequestDetail.error");
 	      console.log(error);
 	    }
 	    });
