@@ -561,7 +561,10 @@ function sendAllMessage(request){
 	var functionGetEmailTemplates = getEmailTemplates(lang,type);
 	listFunctionsToCall.push(functionGetEmailTemplates);	
 	//results2
+	console.log("before functionGetRequestDetail");
 	var functionGetRequestDetail = getRequestDetail(idListForms);
+	console.log("after functionGetRequestDetail");
+	
 	listFunctionsToCall.push(functionGetRequestDetail);
 	//results3
 	var functionGetOfferDetail = getOfferDetail(idListOffers);
