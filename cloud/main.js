@@ -65,9 +65,9 @@ function getRequestDetail(idListForms){
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
-	var res = query.first();
-	console.log("getRequestDetail: " + res);
-	return res;
+	var myres = query.first();
+	console.log("getRequestDetail: " + String(myres));
+	return myres;
 }
 
 function getOfferDetail(idListOffers){
@@ -77,7 +77,9 @@ function getOfferDetail(idListOffers){
 		var query = new Parse.Query("ListOffers");
 		query.equalTo("objectId", idListOffers);
 		query.include('idUserResponder');
-		return query.first();
+		var myres = query.first();
+		console.log("getOfferDetail: " + String(myres));
+		return myres;
 	}
 	return;
 }
