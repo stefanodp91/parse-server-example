@@ -405,10 +405,11 @@ Parse.Cloud.define("sendNotification", function(request, response) {
     var type = request.params.type;
     var idUserRequest = request.params.idUserRequest;
     //Set push query
-	var pushQuery = new Parse.Query(Parse.Installation);
+/*	var pushQuery = new Parse.Query(Parse.Installation);
 	var targetUser = new Parse.User();
 	targetUser.id = idTo;
 	pushQuery.equalTo("user", targetUser);
+	*/
 /*
 	Parse.Push.send(
 	{
