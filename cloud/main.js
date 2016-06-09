@@ -335,6 +335,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 //----------------------------------------------//
 function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserRequest){
 	"use strict";
+	console.log("configNotification");
 	//console.log("\n +++++++++ configNotification ++++++++++++\n idListForms:"+idListForms+"\n idTo:"+idTo+"\n subjectEmail:"+subjectEmail+"\n badge:"+badge);
 	var arrayReplaceString = [];
 	arrayReplaceString.push(replaceString(subjectEmail));	
@@ -561,6 +562,7 @@ function sendAllMessage(request){
 	listFunctionsToCall.push(functionGetOfferDetail);
 	//results4
 	if(type === TYPE_NEW_REQUEST ){
+		console.log("TYPE_NEW_REQUEST");
 		functionGetAddressesEmail = getListAllEmailProfessional();
 		listFunctionsToCall.push(functionGetAddressesEmail);
 	}
@@ -579,6 +581,7 @@ function sendAllMessage(request){
     Parse.Promise.when(listFunctionsToCall).then(
 		function(results1, objectRequest, objectOffer, results4){
 			"use strict";
+			console.log("listFunctionsToCall");
 			//------------------------------------------------------//
 			// START SET VARIABLES
 			//------------------------------------------------------//
@@ -676,6 +679,7 @@ function sendAllMessage(request){
 				var badge = 1;
 				
 				if(type === TYPE_NEW_REQUEST ){
+					console.log("configNotification");
 					if(typeCode === 10){
 						// - invio email di conferma nuova richiesta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
