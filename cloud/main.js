@@ -276,7 +276,12 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	Parse.Promise.when(arrayReplaceString).then(
 	function(results) {
 		var nwSubjectEmail = results[0];
+		console.log("nwSubjectEmail :");
+		console.log(nwSubjectEmail);
+		
 		var nwBodyEmail = results[1];
+		console.log("nwBodyEmail : ");
+		console.log(nwBodyEmail);
 		console.log("Parse.Promise.when -> "+toEmail);
 		Parse.Cloud.run('sendEmail', {
 				"idListForms" : idListForms, 
@@ -287,12 +292,15 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 				"typeCode" : typeCode,
 				"bodyEmail" : nwBodyEmail
 			}).then(function(resp) {
+				console.log(resp);
 				return(resp);
 			}, function(error) {
+				console.log(error);
 				return(error);
 			});
 	},function(error) {
 	  // error
+	  console.log(error);
 	  return(error);
 	});	
 }
