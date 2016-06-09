@@ -65,7 +65,9 @@ function getRequestDetail(idListForms){
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
-	return query.first();
+	var res = query.first();
+	console.log("getRequestDetail: " + res);
+	return res;
 }
 
 function getOfferDetail(idListOffers){
