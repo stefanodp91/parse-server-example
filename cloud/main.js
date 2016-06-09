@@ -927,6 +927,7 @@ function sendAllMessage(request){
 	}, 
 	function(error) {
 		console.log("error on promise: "+ error );
+		response.error(error);
 	}
 	);
 	
