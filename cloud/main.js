@@ -274,7 +274,9 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	arrayReplaceString.push(replaceString(subjectEmail));	
 	arrayReplaceString.push(replaceString(bodyEmail));	
 	Parse.Promise.when(arrayReplaceString).then(
-	function(nwSubjectEmail, nwBodyEmail) {
+	function(results) {
+		var nwSubjectEmail = results[0];
+		var nwBodyEmail = results[1];
 		console.log("Parse.Promise.when -> "+toEmail);
 		Parse.Cloud.run('sendEmail', {
 				"idListForms" : idListForms, 
