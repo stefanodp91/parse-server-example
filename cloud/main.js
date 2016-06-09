@@ -61,7 +61,7 @@ function getEmailTemplates(lang,type){
 
 function getRequestDetail(idListForms){
 	"use strict";
-	//console.log("\n +++++++++ STEP 2\n "+idListForms + "\n");
+	console.log("\n +++++++++ STEP 2\n "+idListForms + "\n");
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
@@ -72,7 +72,7 @@ function getRequestDetail(idListForms){
 
 function getOfferDetail(idListOffers){
 	"use strict";
-	//console.log("\n +++++++++ STEP 3\n "+idListOffers + "\n");
+	console.log("\n +++++++++ STEP 3\n "+idListOffers + "\n");
 	if(idListOffers){
 		var query = new Parse.Query("ListOffers");
 		query.equalTo("objectId", idListOffers);
@@ -84,7 +84,7 @@ function getOfferDetail(idListOffers){
 
 function getListAllEmailProfessional(){
 	"use strict";
-	//console.log("\n +++++++++ STEP 4 getListAllEmailProfessional\n ");
+	console.log("\n +++++++++ STEP 4 getListAllEmailProfessional\n ");
 	
 	var query = new Parse.Query("Professional");
 	query.include('idUser');
@@ -98,7 +98,7 @@ function getListAllEmailProfessional(){
 
 function getListEmailProfessionalSentOffer(idListForms){
 	"use strict";
-	//console.log("\n +++++++++ STEP 4 getListEmailProfessionalSentOffer ++++++++++++\n"+idListForms);
+	console.log("\n +++++++++ STEP 4 getListEmailProfessionalSentOffer ++++++++++++\n"+idListForms);
 	var Form = Parse.Object.extend("ListForms");
 	var form = new Form();
 	form.id = idListForms;
@@ -110,7 +110,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 
 function getLEmailLastBestOffer(idListForms){
 	"use strict";
-	//console.log("\n +++++++++ STEP 4 getLEmailLastBestOffer ++++++++++++\n"+idListForms);
+	console.log("\n +++++++++ STEP 4 getLEmailLastBestOffer ++++++++++++\n"+idListForms);
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserResponder');
@@ -119,7 +119,7 @@ function getLEmailLastBestOffer(idListForms){
 
 function replaceString(string){
 	"use strict";
-	//console.log("\n *********** replaceString START ************"+string);
+	console.log("\n *********** replaceString START ************"+string);
 	//[NAME_APP]
 	//[ID_REQUEST]
 	//[CREATEDAT_REQUEST]
