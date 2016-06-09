@@ -605,15 +605,28 @@ function sendAllMessage(request){
 		listFunctionsToCall.push(functionGetAddressesEmail);
 	}
     Parse.Promise.when(listFunctionsToCall).then(
-		function(results1, objectRequest, objectOffer, results4){
+		function(results){
 			"use strict";
 			console.log("listFunctionsToCall");
-			console.log("results1: " );
-			console.log(results1 );
+			console.log("results: " );
+			console.log(results );
+			
+			var results1 = results[0];
+			console.log("results1: ");
+			console.log(results1);
+
+
+			var objectRequest = results[1];
 			console.log("objectRequest: ");
 			console.log(objectRequest);
-			console.log("objectOffer: " + objectOffer );  
-			console.log("results4: " + results4 );  
+			
+			var objectOffer = results[2];
+			console.log("objectOffer: ");
+			console.log(objectOffer );  
+			
+			var results4 = results[3];
+			console.log("results4: ");
+			console.log(results4 );  
 			//------------------------------------------------------//
 			// START SET VARIABLES
 			//------------------------------------------------------//
