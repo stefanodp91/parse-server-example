@@ -371,7 +371,8 @@ function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserReque
 	var arrayReplaceString = [];
 	arrayReplaceString.push(replaceString(subjectEmail));	
 	Parse.Promise.when(arrayReplaceString).then(
-	function(nwSubjectEmail) {
+	function(results) {
+		var nwSubjectEmail = results[0];
 		/*
 		console.log("idListForms: " +idListForms);
 		console.log("idTo: " +idTo);
