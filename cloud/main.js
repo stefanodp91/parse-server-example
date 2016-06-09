@@ -66,7 +66,7 @@ function getRequestDetail(idListForms){
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
 	var myres = query.first();
-	console.log("getRequestDetail: " + String(myres));
+	console.log("getRequestDetail: " + dump(myres));
 	return myres;
 }
 
@@ -78,7 +78,7 @@ function getOfferDetail(idListOffers){
 		query.equalTo("objectId", idListOffers);
 		query.include('idUserResponder');
 		var myres = query.first();
-		console.log("getOfferDetail: " + String(myres));
+		console.log("getOfferDetail: " + dump(myres));
 		return myres;
 	}
 	return;
