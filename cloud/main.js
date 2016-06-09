@@ -999,8 +999,10 @@ Parse.Cloud.define('testquery', function(req, res) {
 
 
 Parse.Cloud.define('testquery2', function(req, res) {
- 	var query = new Parse.Query("EmailConfig");
- 	query.limit(1); 
+ 	var query = new Parse.Query("ListForms");
+	query.equalTo("objectId", "WNSbHDmE7u");
+	query.include('idUserRequest');
+	
 	query.find({
     success: function(results) {
     	res.success(results);
