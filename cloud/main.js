@@ -608,8 +608,10 @@ function sendAllMessage(request){
 		function(results1, objectRequest, objectOffer, results4){
 			"use strict";
 			console.log("listFunctionsToCall");
-			console.log("results1: " + results1 );
-			console.log("objectRequest: " + objectRequest );
+			console.log("results1: " );
+			console.log(results1 );
+			console.log("objectRequest: ");
+			console.log(objectRequest);
 			console.log("objectOffer: " + objectOffer );  
 			console.log("results4: " + results4 );  
 			//------------------------------------------------------//
