@@ -977,10 +977,10 @@ Parse.Cloud.define('testquery', function(req, res) {
  	query.limit(1); 
 	query.find({
     success: function(results) {
-    	response.success("Payment saved");
+    	res.success("Payment saved");
     },
     error: function() {
-      response.error("movie lookup failed");
+      res.error("movie lookup failed");
     }
   });
 });
