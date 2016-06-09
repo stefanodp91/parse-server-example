@@ -974,5 +974,6 @@ Parse.Cloud.define('hello', function(req, res) {
 
 Parse.Cloud.define('testquery', function(req, res) {
  	var query = new Parse.Query("EmailConfig");
+ 	query.limit(1); 
 	return query.find();
 });
