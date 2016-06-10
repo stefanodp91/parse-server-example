@@ -1133,7 +1133,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
 		error: function (error) {
 			response.error(error);
 		}
-	});*/
+	});
 
 	console.log("testnotify end");
 });
