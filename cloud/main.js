@@ -1133,7 +1133,9 @@ Parse.Cloud.define('testnotify', function(req, res) {
 		error: function (error) {
 			response.error(error);
 		}
-	});
+	},
+	useMasterKey: true
+	);
 
 	console.log("testnotify end");
 });
