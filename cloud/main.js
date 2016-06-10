@@ -1093,9 +1093,16 @@ Parse.Cloud.define('testquery3', function(req, res) {
 
 Parse.Cloud.define('testnotify', function(req, res) {
 	console.log("testnotify");
-	var query = new Parse.Query(Parse.Installation);
-	query.equalTo("objectId","0YMM3lzkr5");
-	query.find({ useMasterKey: true ,
+	var userQuery = new Parse.Query(Parse.User);
+	userQuery.equalTo("objectid", "7a8fXtnNsh");
+
+	// Find devices associated with these users
+	var pushQuery = new Parse.Query(Parse.Installation);
+	pushQuery.matchesQuery('user', userQuery);
+	
+	//var query = new Parse.Query(Parse.Installation);
+	//query.equalTo("objectId","0YMM3lzkr5");
+	pushQuery.find({ useMasterKey: true ,
     success: function(results) {
     	res.success(results);
     },
