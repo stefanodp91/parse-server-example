@@ -1101,7 +1101,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
     },
     error: function(error) {
       res.error(error);
-    }
+    });
     
 /*Parse.Push.send(
 	{
