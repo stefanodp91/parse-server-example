@@ -1110,23 +1110,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
       res.error(error);
     }
     });*/
-    Parse.Push.send({
-	  where: query,
-	  data: {
-	    alert: 'Test',
-	    badge: 1,
-	    sound: 'default'
-	  }
-	}, {
-	  success: function() {
-	    console.log('##### PUSH OK');
-	  },
-	  error: function(error) {
-	    console.log('##### PUSH ERROR');
-	  },
-	  useMasterKey: true
-	});
-
+   
     Parse.Push.send(
 	{
 		where: pushQuery,
