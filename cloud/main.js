@@ -1095,8 +1095,15 @@ Parse.Cloud.define('testnotify', function(req, res) {
 	console.log("testnotify");
 	var query = new Parse.Query(Parse.Installation);
 	query.equalTo('objectid', "sXhAwcVeLX");
-
-Parse.Push.send(
+	query.find({
+    success: function(results) {
+    	res.success(results);
+    },
+    error: function(error) {
+      res.error(error);
+    }
+    
+/*Parse.Push.send(
 	{
 		where: query,
 		data: {
@@ -1118,6 +1125,6 @@ Parse.Push.send(
 		error: function (error) {
 			response.error(error);
 		}
-	});
+	});*/
 	console.log("testnotify end");
 });
