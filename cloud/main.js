@@ -1095,7 +1095,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
 	console.log("testnotify");
 	var query = new Parse.Query(Parse.Installation);
 	query.equalTo('objectid', "sXhAwcVeLX");
-	query.find({
+	query.find({ useMasterKey: true ,
     success: function(results) {
     	res.success(results);
     },
