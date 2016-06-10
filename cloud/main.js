@@ -1114,6 +1114,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
     Parse.Push.send(
 	{
 		where: pushQuery,
+		useMasterKey: true, 
 		data: {
 			to: "7a8fXtnNsh",
 			//t: "chat", // type
@@ -1133,8 +1134,8 @@ Parse.Cloud.define('testnotify', function(req, res) {
 		error: function (error) {
 			response.error(error);
 		}
-	},
-	useMasterKey: true
+	}
+	
 	);
 
 	console.log("testnotify end");
