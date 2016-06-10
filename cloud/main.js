@@ -1102,15 +1102,38 @@ Parse.Cloud.define('testnotify', function(req, res) {
 	
 	//var query = new Parse.Query(Parse.Installation);
 	//query.equalTo("objectId","0YMM3lzkr5");
-	pushQuery.find({ useMasterKey: true ,
+/*	pushQuery.find({ useMasterKey: true ,
     success: function(results) {
     	res.success(results);
     },
     error: function(error) {
       res.error(error);
     }
-    });
+    });*/
     
+    Parse.Push.send(
+	{
+		where: pushQuery,
+		data: {
+			to: "7a8fXtnNsh",
+			//t: "chat", // type
+			idListForms: "WNSbHDmE7u",
+			//badge: badge,
+			alert: "ciao",
+			sound: "chime",
+			title: "alertMessage", // android only
+			type: "TYPE_NEW_REQUEST",
+			idUserRequest: "7a8fXtnNsh"
+		}
+	},
+	{
+		success: function(){
+			response.success('notification sent');
+		},
+		error: function (error) {
+			response.error(error);
+		}
+	});*/
 
 	console.log("testnotify end");
 });
