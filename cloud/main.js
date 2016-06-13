@@ -366,19 +366,19 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 //----------------------------------------------//
 function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserRequest){
 	"use strict";
-	console.log("configNotification");
+	console.log(" * configNotification * ");
 	//console.log("\n +++++++++ configNotification ++++++++++++\n idListForms:"+idListForms+"\n idTo:"+idTo+"\n subjectEmail:"+subjectEmail+"\n badge:"+badge);
 	var arrayReplaceString = [];
 	arrayReplaceString.push(replaceString(subjectEmail));	
 	Parse.Promise.when(arrayReplaceString).then(
 	function(results) {
 		var nwSubjectEmail = results[0];
-		/*
+		
 		console.log("idListForms: " +idListForms);
 		console.log("idTo: " +idTo);
 		console.log("subjectEmail: " +nwSubjectEmail);
 		console.log("badge: " +badge);
-		*/
+		
 		Parse.Cloud.run('sendNotification', {
 			"idListForms" : idListForms,
 			"idTo" : idTo,
