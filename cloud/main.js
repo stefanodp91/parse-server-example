@@ -257,7 +257,7 @@ function checkNotification(idListForms, emailTo, result){
 
 function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail){
 	"use strict";
-	//console.log("CONFIG-SEND-EMAIL: "+toEmail);
+	console.log("* configSendEmail: "+toEmail+" *");
 	/*
 	console.log("***********configSendEmail*************");
 	console.log("idListForms: " + idListForms);
@@ -312,7 +312,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 Parse.Cloud.define("sendEmail", function(request, response) {
 	"use strict";
 	
-	//console.log("+++++++++ sendEmail ++++++++++++");
+	console.log("+++++++++ sendEmail ++++++++++++");
 
 	var fromEmail = request.params.fromEmail;
 	var toEmail = request.params.toEmail;
@@ -410,7 +410,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	targetUser.id = idTo;
 	pushQuery.equalTo("user", targetUser);
 	
-
+	console.log("Test PreSendPush");
 	Parse.Push.send(
 	{
 		useMasterKey: true,
