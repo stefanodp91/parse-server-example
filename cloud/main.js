@@ -1098,8 +1098,8 @@ Parse.Cloud.define('testnotify', function(req, res) {
 
 	// Find devices associated with these users
 	var pushQuery = new Parse.Query(Parse.Installation);
-	pushQuery.matchesQuery('user', userQuery);
-	
+	pushQuery.equalTo('user', userQuery);
+	console.log("TEST prePush");
 	//var query = new Parse.Query(Parse.Installation);
 	//query.equalTo("objectId","0YMM3lzkr5");
 /*	pushQuery.find({ useMasterKey: true ,
@@ -1113,6 +1113,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
    
     Parse.Push.send(
 	{
+		useMasterKey: true,
 		where: pushQuery,
 		data: {
 			to: "7a8fXtnNsh",
