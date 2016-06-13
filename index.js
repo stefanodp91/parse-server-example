@@ -21,6 +21,10 @@ var api = new ParseServer({
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
   push: {
+    android: {
+      senderId: '611395477525', // The Sender ID of GCM
+      apiKey: 'AIzaSyCKhEdHxjyBo_ei4ipmHM7VrrnRNjERAzQ' // The Server API Key of GCM
+    },
       ios: {
         pfx: __dirname + '/cloud/a.p12',
         passphrase: '', // optional password to your p12/PFX
