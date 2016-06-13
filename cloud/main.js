@@ -1116,15 +1116,15 @@ Parse.Cloud.define('testnotify', function(req, res) {
 		useMasterKey: true,
 		where: pushQuery,
 		data: {
-			to: "7a8fXtnNsh",
+			to: "H2xdLVO48D",
 			//t: "chat", // type
 			idListForms: "WNSbHDmE7u",
 			//badge: badge,
 			alert: "ciao",
 			sound: "chime",
 			title: "alertMessage", // android only
-			type: "TYPE_NEW_REQUEST",
-			idUserRequest: "7a8fXtnNsh"
+			type: "TYPE_NEW_OFFER",
+			idUserRequest: "H2xdLVO48D"
 		}
 	},
 	{
