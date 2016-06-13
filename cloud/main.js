@@ -135,7 +135,7 @@ function getLEmailLastBestOffer(idListForms){
 
 function replaceString(string){
 	"use strict";
-	console.log("\n *********** replaceString START ************"+string);
+	//console.log("\n *********** replaceString START ************"+string);
 	//[NAME_APP]
 	//[ID_REQUEST]
 	//[CREATEDAT_REQUEST]
@@ -257,8 +257,8 @@ function checkNotification(idListForms, emailTo, result){
 
 function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail){
 	"use strict";
-	console.log("* configSendEmail: "+toEmail+" *");
-	/*
+	console.log("* configSendEmail: "+toEmail+" -> "+subjectEmail+" *");
+	
 	console.log("***********configSendEmail*************");
 	console.log("idListForms: " + idListForms);
 	console.log("fromEmail: " + fromEmail);
@@ -267,7 +267,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	console.log("type: " + type);
 	console.log("typeCode: " + typeCode);
 	console.log("bodyEmail: " + bodyEmail);
-	*/
+	
 	var arrayReplaceString = [];
 	//console.log("Subject: "+replaceString(subjectEmail));
 	//console.log("Body: "+replaceString(bodyEmail));
@@ -322,15 +322,16 @@ Parse.Cloud.define("sendEmail", function(request, response) {
   	var typeSendEmail = request.params.type;
   	var htmlBody = bodyEmail;
   	
-	/*
+	
 	console.log("\n +++++++++ fromEmail ++++++++++++"+fromEmail);
 	console.log("\n +++++++++ toEmail ++++++++++++"+toEmail);
 	console.log("\n +++++++++ bodyEmail ++++++++++++"+bodyEmail);
 	console.log("\n +++++++++ subjectEmail ++++++++++++"+subjectEmail);
 	console.log("\n +++++++++ idListForms ++++++++++++"+idListForms);
 	console.log("\n +++++++++ typeSendEmail ++++++++++++"+typeSendEmail);	
-	*/
+	
 	client.sendEmail({
+		useMasterKey: true,
 		to: toEmail,
 		//bcc: arrayToEmail,
 		from: fromEmail,
