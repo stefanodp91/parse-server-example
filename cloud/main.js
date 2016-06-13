@@ -434,7 +434,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 		error: function (error) {
 			response.error(error);
 		}
-	});*/
+	});
 });
 
 
