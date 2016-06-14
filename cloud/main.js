@@ -427,8 +427,8 @@ function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserReque
 
 Parse.Cloud.define("sendNotification", function(request, response) {
     "use strict";
-	//console.log("+++++++++ sendNotification ++++++++++++");
-	response.success('notification sent TEST');
+	console.log("+++++++++ sendNotification ++++++++++++");
+	//response.success('notification sent TEST');
 	
     var idTo = request.params.idTo;
     var alertMessage = request.params.alertMessage;
@@ -464,12 +464,14 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	
 	{
 		success: function(){
-			response.success('notification sent');
+			console.log("NOTIFICATION-SEND success!!!");
+			
 		},
 		error: function (error) {
 			response.error(error);
 		},	useMasterKey: true
 	});
+	response.success('notification sent');
 	
 });
 
