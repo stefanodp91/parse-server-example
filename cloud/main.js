@@ -1185,7 +1185,8 @@ Parse.Cloud.define('testEmail', function(req, res) {
 		html: "html Body"
 	}).then(function(httpResponse) {
 		console.log("SAND EMAIL-Success: ");
-		response.success("Respons email Success");
+		console.log(httpResponse);
+		response.success('email sent TEST');
 	}, function(httpResponse) {
 		console.log("\n ERROR SAND EMAIL\n arrayToEmail:");
 	
