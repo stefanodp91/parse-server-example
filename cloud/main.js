@@ -1115,7 +1115,6 @@ Parse.Cloud.define('testnotify', function(req, res) {
    
     Parse.Push.send(
 	{
-		useMasterKey: true,
 		where: pushQuery,
 		data: {
 			to: "H2xdLVO48D",
