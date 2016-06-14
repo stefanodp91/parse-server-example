@@ -429,7 +429,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
     "use strict";
 	//console.log("+++++++++ sendNotification ++++++++++++");
 	response.success('notification sent TEST');
-	/*
+	
     var idTo = request.params.idTo;
     var alertMessage = request.params.alertMessage;
     var idListForms = request.params.idListForms;
@@ -470,7 +470,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 			response.error(error);
 		},	useMasterKey: true
 	});
-	*/
+	
 });
 
 
