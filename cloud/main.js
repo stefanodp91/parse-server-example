@@ -355,6 +355,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 	console.log(" +++++++++ idListForms ++++++++++++"+idListForms);
 	console.log(" +++++++++ typeSendEmail ++++++++++++"+typeSendEmail);	
 	*/
+	/*
 	client.sendEmail({
 		//useMasterKey: true,
 		to: toEmail,
@@ -381,6 +382,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 		//console.error(httpResponse);
 		//response.error("Uh oh, something went wrong");
 	});
+	*/
 });
 //----------------------------------------------//
 //END SEND EMAIL 
