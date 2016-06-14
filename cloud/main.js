@@ -409,12 +409,12 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	var pushQuery = new Parse.Query(Parse.Installation);
 	var targetUser = new Parse.User();
 	targetUser.id = idTo;
-	pushQuery.equalTo("user", targetUser);
+	pushQuery.matchesQuery("user", targetUser);
 	
 	console.log("Test PreSendPush");
 	Parse.Push.send(
 	{
-		useMasterKey: true,
+	
 		where: pushQuery,
 		data: {
 			to: idTo,
@@ -434,7 +434,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 		},
 		error: function (error) {
 			response.error(error);
-		}
+		},	useMasterKey: true
 	});
 });
 
