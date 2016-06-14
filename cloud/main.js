@@ -272,12 +272,12 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	//console.log("Subject: "+replaceString(subjectEmail));
 	//console.log("Body: "+replaceString(bodyEmail));
 	var nwSubjectEmail = replaceString(subjectEmail);
-	console.log("nwSubjectEmail :");
-	console.log(nwSubjectEmail);
+	//console.log("nwSubjectEmail :");
+	//console.log(nwSubjectEmail);
 	
 	var nwBodyEmail = replaceString(bodyEmail);
-	console.log("nwBodyEmail : ");
-	console.log(nwBodyEmail);
+	//console.log("nwBodyEmail : ");
+	//console.log(nwBodyEmail);
 	Parse.Cloud.run('sendEmail', {
 				"idListForms" : idListForms, 
 				"fromEmail" : fromEmail,
@@ -288,7 +288,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 				"bodyEmail" : nwBodyEmail
 			}).then(function(resp) {
 				console.log(resp);
-				return(resp);
+				//return(resp);
 			}, function(error) {
 				console.log(error);
 				return(error);
@@ -337,7 +337,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 Parse.Cloud.define("sendEmail", function(request, response) {
 	"use strict";
 	
-	console.log("+++++++++ sendEmail ++++++++++++");
+	console.log("+++++++++ sendEmail: "+request.params.toEmail+" ++++++++++++");
 
 	var fromEmail = request.params.fromEmail;
 	var toEmail = request.params.toEmail;
@@ -392,7 +392,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 //----------------------------------------------//
 function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserRequest){
 	"use strict";
-	console.log(" * configNotification * ");
+	//console.log(" * configNotification * ");
 	//console.log("\n +++++++++ configNotification ++++++++++++\n idListForms:"+idListForms+"\n idTo:"+idTo+"\n subjectEmail:"+subjectEmail+"\n badge:"+badge);
 	var arrayReplaceString = [];
 	arrayReplaceString.push(replaceString(subjectEmail));	
@@ -423,7 +423,7 @@ function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserReque
 
 Parse.Cloud.define("sendNotification", function(request, response) {
     "use strict";
-	console.log("+++++++++ sendNotification ++++++++++++");
+	//console.log("+++++++++ sendNotification ++++++++++++");
 	response.success('notification sent TEST');
 	/*
     var idTo = request.params.idTo;
