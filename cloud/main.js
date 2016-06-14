@@ -411,7 +411,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	//targetUser.id = idTo;
 	var userQuery = new Parse.Query(Parse.User);
 	userQuery.equalTo("objectId", idTo);
-	pushQuery.matchesQuery("user", targetUser);
+	pushQuery.matchesQuery("user", userQuery);
 	
 	console.log("Test PreSendPush");
 	Parse.Push.send(
