@@ -347,6 +347,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
   	var typeSendEmail = request.params.type;
   	var htmlBody = bodyEmail;
   	
+  	response.success("Email sent! "+toEmail);
 	/*
 	console.log(" +++++++++ fromEmail ++++++++++++"+fromEmail);
 	console.log(" +++++++++ toEmail ++++++++++++"+toEmail);
