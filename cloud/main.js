@@ -1096,11 +1096,11 @@ Parse.Cloud.define('testquery3', function(req, res) {
 Parse.Cloud.define('testnotify', function(req, res) {
 	console.log("testnotify");
 	var userQuery = new Parse.Query(Parse.User);
-	userQuery.matchesQuery("username", "aleoaleo");
+	userQuery.equalTo("username", "aleoaleo");
 
 	// Find devices associated with these users
 	var pushQuery = new Parse.Query(Parse.Installation);
-	pushQuery.equalTo('user', userQuery);
+	pushQuery.matchesQuery('user', userQuery);
 	console.log("TEST prePush");
 	//var query = new Parse.Query(Parse.Installation);
 	//query.equalTo("objectId","0YMM3lzkr5");
