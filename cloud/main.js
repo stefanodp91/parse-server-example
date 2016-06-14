@@ -464,7 +464,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	
 	{
 		success: function(){
-			console.log("NOTIFICATION-SEND success!!!");
+			console.log("NOTIFICATION-SEND success!!! -> "+ idTo);
 			
 		},
 		error: function (error) {
