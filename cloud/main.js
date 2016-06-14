@@ -1172,3 +1172,25 @@ Parse.Cloud.define('testnotify', function(req, res) {
 
 	console.log("testnotify end");
 });
+
+Parse.Cloud.define('testEmail', function(req, res) {
+	console.log("* Test Email *");
+	client.sendEmail({
+		//useMasterKey: true,
+		to: "giuseppe.trazza@gmail.com",
+		//bcc: arrayToEmail,
+		from: "info@rukku.it",
+		subject: "Test Email",
+		text: "body text",
+		html: "html Body"
+	}).then(function(httpResponse) {
+		console.log("SAND EMAIL-Success: ");
+		
+	}, function(httpResponse) {
+		console.log("\n ERROR SAND EMAIL\n arrayToEmail:");
+	
+		//console.error(httpResponse);
+		//response.error("Uh oh, something went wrong");
+	});
+ 	
+});
