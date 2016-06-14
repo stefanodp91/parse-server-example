@@ -258,7 +258,7 @@ function checkNotification(idListForms, emailTo, result){
 function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail){
 	"use strict";
 	console.log("* configSendEmail: "+toEmail+" -> "+subjectEmail+" *");
-	
+	/*
 	console.log("***********configSendEmail*************");
 	console.log("idListForms: " + idListForms);
 	console.log("fromEmail: " + fromEmail);
@@ -267,7 +267,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	console.log("type: " + type);
 	console.log("typeCode: " + typeCode);
 	console.log("bodyEmail: " + bodyEmail);
-	
+	*/
 	var arrayReplaceString = [];
 	//console.log("Subject: "+replaceString(subjectEmail));
 	//console.log("Body: "+replaceString(bodyEmail));
@@ -347,14 +347,14 @@ Parse.Cloud.define("sendEmail", function(request, response) {
   	var typeSendEmail = request.params.type;
   	var htmlBody = bodyEmail;
   	
-	
-	console.log("\n +++++++++ fromEmail ++++++++++++"+fromEmail);
-	console.log("\n +++++++++ toEmail ++++++++++++"+toEmail);
-	console.log("\n +++++++++ bodyEmail ++++++++++++"+bodyEmail);
-	console.log("\n +++++++++ subjectEmail ++++++++++++"+subjectEmail);
-	console.log("\n +++++++++ idListForms ++++++++++++"+idListForms);
-	console.log("\n +++++++++ typeSendEmail ++++++++++++"+typeSendEmail);	
-	
+	/*
+	console.log(" +++++++++ fromEmail ++++++++++++"+fromEmail);
+	console.log(" +++++++++ toEmail ++++++++++++"+toEmail);
+	console.log(" +++++++++ bodyEmail ++++++++++++"+bodyEmail);
+	console.log(" +++++++++ subjectEmail ++++++++++++"+subjectEmail);
+	console.log(" +++++++++ idListForms ++++++++++++"+idListForms);
+	console.log(" +++++++++ typeSendEmail ++++++++++++"+typeSendEmail);	
+	*/
 	client.sendEmail({
 		//useMasterKey: true,
 		to: toEmail,
@@ -365,7 +365,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 		html: htmlBody
 	}).then(function(httpResponse) {
 		console.log("SAND EMAIL-Success: "+toEmail);
-		console.log("idListForms: " + idListForms);
+		//console.log("idListForms: " + idListForms);
 		if(typeSendEmail == TYPE_ACCEPTED_OFFER){
 			console.log("send email: " + typeSendEmail);
 			console.log("idForms: " + request.params.idListForms);
@@ -399,12 +399,12 @@ function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserReque
 	Parse.Promise.when(arrayReplaceString).then(
 	function(results) {
 		var nwSubjectEmail = results[0];
-		
+		/*
 		console.log("idListForms: " +idListForms);
 		console.log("idTo: " +idTo);
 		console.log("subjectEmail: " +nwSubjectEmail);
 		console.log("badge: " +badge);
-		
+		*/
 		Parse.Cloud.run('sendNotification', {
 			"idListForms" : idListForms,
 			"idTo" : idTo,
