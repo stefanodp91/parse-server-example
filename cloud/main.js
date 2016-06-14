@@ -1181,16 +1181,16 @@ Parse.Cloud.define('testEmail', function(req, res) {
 		//bcc: arrayToEmail,
 		from: "info@rukku.it",
 		subject: "Test Email",
-		text: "body text",
+		//text: "body text",
 		html: "html Body"
 	}).then(function(httpResponse) {
 		console.log("SAND EMAIL-Success: ");
-		
+		response.success("Respons email Success");
 	}, function(httpResponse) {
 		console.log("\n ERROR SAND EMAIL\n arrayToEmail:");
 	
 		//console.error(httpResponse);
-		//response.error("Uh oh, something went wrong");
+		response.error("Uh oh, something went wrong");
 	});
  	
 });
