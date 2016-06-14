@@ -431,7 +431,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 			idUserRequest: idUserRequest
 		}
 	},
-	*/
+	
 	{
 		success: function(){
 			response.success('notification sent');
@@ -440,6 +440,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 			response.error(error);
 		},	useMasterKey: true
 	});
+	*/
 });
 
 
