@@ -399,6 +399,7 @@ function configNotification(idListForms,idTo,subjectEmail,badge,type,idUserReque
 Parse.Cloud.define("sendNotification", function(request, response) {
     "use strict";
 	console.log("+++++++++ sendNotification ++++++++++++");
+	/*
     var idTo = request.params.idTo;
     var alertMessage = request.params.alertMessage;
     var idListForms = request.params.idListForms;
@@ -430,6 +431,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 			idUserRequest: idUserRequest
 		}
 	},
+	*/
 	{
 		success: function(){
 			response.success('notification sent');
