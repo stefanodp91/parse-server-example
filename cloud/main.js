@@ -272,7 +272,8 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	//console.log("Subject: "+replaceString(subjectEmail));
 	//console.log("Body: "+replaceString(bodyEmail));
 	arrayReplaceString.push(replaceString(subjectEmail));	
-	arrayReplaceString.push(replaceString(bodyEmail));	
+	arrayReplaceString.push(replaceString(bodyEmail));
+	console.log("Pre-Promise");
 	Parse.Promise.when(arrayReplaceString).then(
 	function(results) {
 		config.log("results");
