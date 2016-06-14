@@ -331,7 +331,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 	console.log("\n +++++++++ typeSendEmail ++++++++++++"+typeSendEmail);	
 	
 	client.sendEmail({
-		useMasterKey: true,
+		//useMasterKey: true,
 		to: toEmail,
 		//bcc: arrayToEmail,
 		from: fromEmail,
