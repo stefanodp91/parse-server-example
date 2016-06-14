@@ -271,6 +271,29 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	var arrayReplaceString = [];
 	//console.log("Subject: "+replaceString(subjectEmail));
 	//console.log("Body: "+replaceString(bodyEmail));
+	var nwSubjectEmail = replaceString(subjectEmail);
+	console.log("nwSubjectEmail :");
+	console.log(nwSubjectEmail);
+	
+	var nwBodyEmail = replaceString(bodyEmail);
+	console.log("nwBodyEmail : ");
+	console.log(nwBodyEmail);
+	Parse.Cloud.run('sendEmail', {
+				"idListForms" : idListForms, 
+				"fromEmail" : fromEmail,
+				"toEmail" : toEmail,
+				"subjectEmail" : nwSubjectEmail,
+				"type" : type,
+				"typeCode" : typeCode,
+				"bodyEmail" : nwBodyEmail
+			}).then(function(resp) {
+				console.log(resp);
+				return(resp);
+			}, function(error) {
+				console.log(error);
+				return(error);
+			});
+	/* // non entra nel Promise.when
 	arrayReplaceString.push(replaceString(subjectEmail));	
 	arrayReplaceString.push(replaceString(bodyEmail));
 	console.log("Pre-Promise");
@@ -306,7 +329,8 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	  // error
 	  console.log(error);
 	  return(error);
-	});	
+	});
+	*/
 }
 
 
