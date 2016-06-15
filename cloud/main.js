@@ -502,8 +502,6 @@ function sendNotificationOffer(request){
 			"idListOffers" : idOffer,
 			//"idPayment": request.params.idPayment
 		
-		}).then(function(resp) {
-			return(resp);
 		});
 		
 	})
@@ -1088,7 +1086,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 			  // all done
 		sendAllMessage(request);
 	  	console.log("OK MESSAGE SAND");
-	  	//response.success("OK MESSAGE SAND");
+	  	response.success("Respnse: OK MESSAGE SAND");
 	}, 	function(error) {
 	  	// error
 	  	console.log("***********ERROR SEND MESSAGE *************");
