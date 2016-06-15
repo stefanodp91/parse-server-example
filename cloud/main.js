@@ -489,6 +489,25 @@ function sendNotificationOffer(request){
 	console.log("idOffer: " + idOffer);
 	var query = new Parse.Query("ListOffers");
 	query.equalTo("objectId", idOffer);
+	query.first().then(function(offer){
+		console.log("idForms: " + offer.get("idListForms").id);
+		var idListForms = offer.get("idListForms").id;
+		console.log("TYPE_ACCEPTED_OFFER: " + TYPE_ACCEPTED_OFFER);
+		Parse.Cloud.run('sendMessages', {
+			"lang" : request.params.lang,
+			"typeSendEmail" : TYPE_ACCEPTED_OFFER,
+			"emailAdmin" : request.params.emailAdmin,
+			"appName": request.params.appName,
+			"idListForms" : idListForms,
+			"idListOffers" : idOffer,
+			//"idPayment": request.params.idPayment
+		
+		}).then(function(resp) {
+			return(resp);
+		});
+		
+	})
+	/*
 	query.first({
 		success: function(offer){
 			console.log("idForms: " + offer.get("idListForms").id);
@@ -504,11 +523,11 @@ function sendNotificationOffer(request){
 				//"idPayment": request.params.idPayment
 			
 			});
-			/*
-			}).then(function(resp) {
-				return(resp);
-			});
-			*/
+			
+			//}).then(function(resp) {
+			//	return(resp);
+			//});
+			
 		},
 		error: function(error){
 			console.log("Error prapare offer notofocation: " + error);
@@ -516,6 +535,7 @@ function sendNotificationOffer(request){
 		}
 		
 	});
+	*/
 }
 
 
