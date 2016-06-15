@@ -505,7 +505,7 @@ function sendNotificationOffer(request){
 			}).then(function(resp) {
 				return(resp);
 			});
-			response.success("Payment saved");
+			
 		},
 		error: function(error){
 			console.log("Error prapare offer notofocation: " + error);
@@ -539,7 +539,7 @@ Parse.Cloud.define("savePayment", function(request, response) {
 	var Offers = Parse.Object.extend("ListOffers");
 	offer = new Offers();
 	offer.id = idOffer;
-	console.log("1 ------------------------------------------------------------------------------------------------");
+	//console.log("1 ------------------------------------------------------------------------------------------------");
 
 
 	var Payments = Parse.Object.extend("Payments");
@@ -550,11 +550,27 @@ Parse.Cloud.define("savePayment", function(request, response) {
 	payment.set("idOffer" , offer);
 	payment.set("amount" , Number(amount));
 
-	console.log("2 ------------------------------------------------------------------------------------------------");
+	//console.log("2 ------------------------------------------------------------------------------------------------");
 
 	var dateP = new Date(datePayment);
 	payment.set("datePayment" , dateP);
-
+	
+	
+	payment.save().then(function(payment){
+		console.log("SUCCESS save Payment"),
+		//console.log("request Admin: " + request.params.emailAdmin);
+		console.log("idPayment: " + payment.id);
+		//request.params.idPayment = payment.id;
+		sendNotificationOffer(request);
+	}, function(error){
+		console.log("error save Payment: " + error);
+		response.error('error save Payment:' + JSON.stringify(error));
+	}).then(function(){
+		response.success("Payment saved");
+	});
+	
+	/*
+	// invio multiplo di mail senza la response
 	payment.save(null, {
 		success: function(payment) {
 			console.log("SUCCESS save Payment"),
@@ -571,7 +587,7 @@ Parse.Cloud.define("savePayment", function(request, response) {
 			response.error('error save Payment:' + JSON.stringify(error));
 		}
 	});
-
+	*/
 
 
 
