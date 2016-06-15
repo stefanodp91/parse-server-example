@@ -505,12 +505,13 @@ function sendNotificationOffer(request){
 			}).then(function(resp) {
 				return(resp);
 			});
-
+			response.success("Payment saved");
 		},
 		error: function(error){
 			console.log("Error prapare offer notofocation: " + error);
-
+			response.error('Error prapare offer notofocation:' + JSON.stringify(error));
 		}
+		
 	});
 }
 
