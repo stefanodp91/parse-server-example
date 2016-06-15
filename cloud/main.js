@@ -565,11 +565,10 @@ Parse.Cloud.define("savePayment", function(request, response) {
 		console.log("idPayment: " + payment.id);
 		//request.params.idPayment = payment.id;
 		sendNotificationOffer(request);
+		response.success("Payment saved");
 	}, function(error){
 		console.log("error save Payment: " + error);
 		response.error('error save Payment:' + JSON.stringify(error));
-	}).then(function(){
-		response.success("Payment saved");
 	});
 	
 	/*
