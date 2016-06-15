@@ -502,10 +502,13 @@ function sendNotificationOffer(request){
 				"idListForms" : idListForms,
 				"idListOffers" : idOffer,
 				//"idPayment": request.params.idPayment
+			
+			});
+			/*
 			}).then(function(resp) {
 				return(resp);
 			});
-			
+			*/
 		},
 		error: function(error){
 			console.log("Error prapare offer notofocation: " + error);
