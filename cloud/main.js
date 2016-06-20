@@ -1170,7 +1170,7 @@ Parse.Cloud.define('testquery3', function(req, res) {
 Parse.Cloud.define('testnotify', function(req, res) {
 	console.log("testnotify");
 	var userQuery = new Parse.Query(Parse.User);
-	userQuery.equalTo("username", "lol");
+	userQuery.equalTo("username", "Peppe");
 
 	// Find devices associated with these users
 	var pushQuery = new Parse.Query(Parse.Installation);
