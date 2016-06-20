@@ -1204,10 +1204,13 @@ Parse.Cloud.define('testnotify', function(req, res) {
 	},
 	{
 		success: function(){
+			console.log("NOTIFICATION SENT");
 			response.success('notification sent');
 		},
 		error: function (error) {
 			response.error(error);
+			console.log("ERROR NOTIFICATION SENT");
+			console.log(error);
 		},	useMasterKey: true
 	}
 	
