@@ -1205,6 +1205,7 @@ Parse.Cloud.define('testnotify', function(req, res) {
 	{
 		success: function(){
 			console.log("NOTIFICATION SENT");
+			console.log(pushQuery);
 			response.success('notification sent');
 		},
 		error: function (error) {
