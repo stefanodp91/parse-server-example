@@ -668,12 +668,12 @@ function sendAllMessage(request){
 	console.log("before functionGetRequestDetail");
 	var functionGetRequestDetail = getRequestDetail(idListForms);
 	console.log("after functionGetRequestDetail");
-	
+	/*
 	Parse.Promise.when(functionGetRequestDetail).then(function(result) {
 		console.log("result of functionGetRequestDetail : ");
 		console.log(result);
 	});
-	
+	*/
 	listFunctionsToCall.push(functionGetRequestDetail);
 	//results3
 	var functionGetOfferDetail = getOfferDetail(idListOffers);
@@ -726,9 +726,9 @@ function sendAllMessage(request){
 			// objectRequest: request+UserRequest
 			// objectOffer:   offer+UserResponder
 			// result4: 	  (TYPE_NEW_REQUEST)  		list Professional + IdUser  
-			//				  (TYPE_CANCELED_REQUEST) 	list Offers + IdUserResponder
-			//				  (TYPE_NEW_OFFER) 			Request + idUserResponder (bestPrice)
-			//				  (TYPE_ACCEPTED_OFFER)  = 	(TYPE_CANCELED_REQUEST)
+			//		  (TYPE_CANCELED_REQUEST) 	list Offers + IdUserResponder
+			//		  (TYPE_NEW_OFFER) 		Request + idUserResponder (bestPrice)
+			//		  (TYPE_ACCEPTED_OFFER)  = 	(TYPE_CANCELED_REQUEST)
 			var i;
 			for (i = 0; i < results1.length; i++) {
 				arrayEmailTemplate.push(results1[i]);
@@ -926,6 +926,7 @@ function sendAllMessage(request){
 						// - invio email di avviso superamento offerta al professionista e all'amministratore
 						//console.log("\n ------ 30 : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
+						console.log("arrayAllEmailTo: " + arrayAllEmailTo.length);
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUserResponder");
