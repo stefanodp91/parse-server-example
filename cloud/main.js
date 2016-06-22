@@ -121,6 +121,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	var query = new Parse.Query("ListOffers");
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
+	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
 
@@ -689,7 +690,8 @@ function sendAllMessage(request){
 		listFunctionsToCall.push(functionGetAddressesEmail);
 	}
 	else if(type === TYPE_NEW_OFFER ){
-		functionGetAddressesEmail = getLEmailLastBestOffer(idListForms);
+		//functionGetAddressesEmail = getLEmailLastBestOffer(idListForms);
+		functionGetAddressesEmail = getListEmailProfessionalSentOffer(idListForms);
 		listFunctionsToCall.push(functionGetAddressesEmail);
 	}
 	else if(type === TYPE_ACCEPTED_OFFER ){
@@ -727,7 +729,7 @@ function sendAllMessage(request){
 			// objectOffer:   offer+UserResponder
 			// result4: 	  (TYPE_NEW_REQUEST)  		list Professional + IdUser  
 			//		  (TYPE_CANCELED_REQUEST) 	list Offers + IdUserResponder
-			//		  (TYPE_NEW_OFFER) 		Request + idUserResponder (bestPrice)
+			//		  (TYPE_NEW_OFFER) 		Request + idUserResponder (bestPrice) -> (TYPE_CANCELED_REQUEST)
 			//		  (TYPE_ACCEPTED_OFFER)  = 	(TYPE_CANCELED_REQUEST)
 			var i;
 			for (i = 0; i < results1.length; i++) {
@@ -737,6 +739,8 @@ function sendAllMessage(request){
 				
 			for (i = 0; i < results4.length; i++) {
 				arrayAllEmailTo.push(results4[i]);
+				console.log(i + ") result4");
+				console.log(results4[i]);
 			}	
 			//console.log("\n objectRequest: "+objectRequest);  
 			userSenderClient = objectRequest.get("idUserRequest");
@@ -925,11 +929,21 @@ function sendAllMessage(request){
 					else if(typeCode === 30){
 						// - invio email di avviso superamento offerta al professionista e all'amministratore
 						//console.log("\n ------ 30 : "+arrayAllEmailTo.length);
+						
 						var arrayToEmail = new Array;
+						//arrayAllEmailTo contiene la lista delle offerte (per la richiesta) in ordine di prezzo
 						console.log("arrayAllEmailTo: " + arrayAllEmailTo.length);
+						console.log("best Price: " + arrayAllEmailTo[0].get("price"));
+						console.log("best Offer Id: " + arrayAllEmailTo[0].id);
+						var bestUser = arrayAllEmailTo[0].get("idUserResponder");
+						console.log("best User: " + bestUser.get("username"));
+						console.log("LISTA OFFERENTI:");
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUserResponder");
+							console.log(user.get("email") +":  " +arrayAllEmailTo[ii].get("price"));
+							
+							/* (di Dario )
 							if(arrayToEmail.indexOf(user.get("email")) === -1 && user.get("email") !== userSenderProfessional.get("email")){
 								arrayToEmail.push(user.get("email"));
 								idTo = user.id;
@@ -943,6 +957,7 @@ function sendAllMessage(request){
 								functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
 								promises.push(functionSendNotification);
 							}
+							*/
 						}
 						if(arrayToEmail.length>0){
 							functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
