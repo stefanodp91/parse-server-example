@@ -931,38 +931,61 @@ function sendAllMessage(request){
 						//console.log("\n ------ 30 : "+arrayAllEmailTo.length);
 						
 						var arrayToEmail = new Array;
-						//arrayAllEmailTo contiene la lista delle offerte (per la richiesta) in ordine di prezzo
+						//arrayAllEmailTo: contiene la lista delle offerte (per la richiesta) in ordine di prezzo
 						console.log("arrayAllEmailTo: " + arrayAllEmailTo.length);
 						console.log("best Price: " + arrayAllEmailTo[0].get("price"));
 						console.log("best Offer Id: " + arrayAllEmailTo[0].id);
+						console.log("current Offer Id: " + objectOffer.id);
 						var bestUser = arrayAllEmailTo[0].get("idUserResponder");
 						console.log("best User: " + bestUser.get("username"));
 						console.log("LISTA OFFERENTI:");
-						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
-						{
-							user = arrayAllEmailTo[ii].get("idUserResponder");
-							console.log(user.get("email") +":  " +arrayAllEmailTo[ii].get("price"));
+						//se l'offerta eseguita è la migliore notifica a tutti "offerta superata"
+						if(arrayAllEmailTo[0].id == objectOffer.id){
+							arrayToEmail.push(userSenderClient.get("email"));
+							arrayToEmail.push(userSenderProfessional.get("email"));
 							
-							/* (di Dario )
-							if(arrayToEmail.indexOf(user.get("email")) === -1 && user.get("email") !== userSenderProfessional.get("email")){
-								arrayToEmail.push(user.get("email"));
-								idTo = user.id;
-								toEmail = user.get("email");
-								//console.log("\n ------prepare for send email : "+toEmail); 
-								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
-								promises.push(functionSendEmailtoProf);
+							for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
+							{
+								user = arrayAllEmailTo[ii].get("idUserResponder");
+								console.log(user.get("email") +":  " +arrayAllEmailTo[ii].get("price"));
+								//arrayToEmail contiene le mail già inviate
+								if(arrayToEmail.indexOf(user.get("email")) === -1){
+									arrayToEmail.push(user.get("email"));
+									idTo = user.id;
+									toEmail = user.get("email");
+									//console.log("\n ------prepare for send email : "+toEmail); 
+									functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
+									promises.push(functionSendEmailtoProf);
+									
+									//send notification
+									console.log("userSenderClient.id: "+userSenderClient.id);
+									functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
+									promises.push(functionSendNotification);
+								}
 								
-								//send notification
-								console.log("userSenderClient.id: "+userSenderClient.id);
-								functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
-								promises.push(functionSendNotification);
+								
 							}
-							*/
+							if(arrayToEmail.length>0){
+								functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
+								promises.push(functionSendEmailtoAdmin);	
+							}
 						}
-						if(arrayToEmail.length>0){
-							functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
-							promises.push(functionSendEmailtoAdmin);	
+						/* ( Dario )
+						if(arrayToEmail.indexOf(user.get("email")) === -1 && user.get("email") !== userSenderProfessional.get("email")){
+							arrayToEmail.push(user.get("email"));
+							idTo = user.id;
+							toEmail = user.get("email");
+							//console.log("\n ------prepare for send email : "+toEmail); 
+							functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
+							promises.push(functionSendEmailtoProf);
+							
+							//send notification
+							console.log("userSenderClient.id: "+userSenderClient.id);
+							functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
+							promises.push(functionSendNotification);
 						}
+						*/
+						
 					}
 				} // end if(type === TYPE_NEW_OFFER)
 				else if(type === TYPE_ACCEPTED_OFFER){
