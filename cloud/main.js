@@ -270,16 +270,19 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 	console.log("bodyEmail: " + bodyEmail);
 	*/
 	var arrayReplaceString = [];
-	//console.log("Subject: "+replaceString(subjectEmail));
-	//console.log("Body: "+replaceString(bodyEmail));
-	var nwSubjectEmail = replaceString(subjectEmail);
-	//console.log("nwSubjectEmail :");
-	//console.log(nwSubjectEmail);
 	
-	var nwBodyEmail = replaceString(bodyEmail);
-	//console.log("nwBodyEmail : ");
-	//console.log(nwBodyEmail);
-	Parse.Cloud.run('sendEmail', {
+	//var nwSubjectEmail = replaceString(subjectEmail);
+	//var nwBodyEmail = replaceString(bodyEmail);
+
+	arrayReplaceString.push(replaceString(subjectEmail));	
+	arrayReplaceString.push(replaceString(bodyEmail));
+	
+	Parse.Promise.when(arrayReplaceString).then(function(results){
+		console.log(results[0]);
+		var nwSubjectEmail = results[0];
+		console.log(results[1]);
+		var nwBodyEmail = results[1];
+		Parse.Cloud.run('sendEmail', {
 				"idListForms" : idListForms, 
 				"fromEmail" : fromEmail,
 				"toEmail" : toEmail,
@@ -287,13 +290,19 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 				"type" : type,
 				"typeCode" : typeCode,
 				"bodyEmail" : nwBodyEmail
-			}).then(function(resp) {
-				console.log(resp);
-				//return(resp);
-			}, function(error) {
-				console.log(error);
-				return(error);
-			});
+		}).then(function(resp) {
+			console.log(resp);
+			//return(resp);
+		}, function(error) {
+			console.log(error);
+			return(error);
+		});
+		
+	}
+	
+			
+			
+			
 	/* // non entra nel Promise.when
 	arrayReplaceString.push(replaceString(subjectEmail));	
 	arrayReplaceString.push(replaceString(bodyEmail));
