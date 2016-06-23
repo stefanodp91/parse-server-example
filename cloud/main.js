@@ -136,7 +136,7 @@ function getLEmailLastBestOffer(idListForms){
 
 function replaceString(string){
 	"use strict";
-	console.log("\n *********** replaceString START ************"+string);
+	console.log("*********** replaceString START ************"+string);
 	//[NAME_APP]
 	//[ID_REQUEST]
 	//[CREATEDAT_REQUEST]
@@ -154,7 +154,7 @@ function replaceString(string){
 			//console.log("\n newString: "+newString+"  arrayFind:"+arrayFindString[i] + " arrayNwString: "+arrayNwString[i]);
 		}
   	}
-	console.log("\n *********** replaceString END ************* newString: "+newString);
+	console.log("*********** replaceString END ************* newString: "+newString);
 	return newString;
 }
 
@@ -759,31 +759,37 @@ function sendAllMessage(request){
 			if(NAME_APP){
 				arrayFindString.push("[NAME_APP]");
 				arrayNwString.push(NAME_APP);
+				console.log("NAME_APP: " + NAME_APP);
 			}
 			ID_REQUEST = idListForms;
 			if(ID_REQUEST){
 				arrayFindString.push("[ID_REQUEST]");
 				arrayNwString.push(ID_REQUEST);
+				console.log("ID_REQUEST: " + ID_REQUEST);
 			}
 			CREATEDAT_REQUEST = objectRequest.createdAt;
 			if(CREATEDAT_REQUEST){
 				arrayFindString.push("[CREATEDAT_REQUEST]");
 				arrayNwString.push(CREATEDAT_REQUEST);
+				console.log("CREATEDAT_REQUEST: " + CREATEDAT_REQUEST);
 			}
 			NAME_USER_CLIENT = userSenderClient.get("fullName");
 			if(NAME_USER_CLIENT){
 				arrayFindString.push("[NAME_USER_CLIENT]");
 				arrayNwString.push(NAME_USER_CLIENT);
+				console.log("NAME_USER_CLIENT: " + NAME_USER_CLIENT);
 			}
 			BEST_PRICE = objectRequest.get("price");
 			if(BEST_PRICE){
 				arrayFindString.push("[BEST_PRICE]");
 				arrayNwString.push(BEST_PRICE);
+				console.log("BEST_PRICE: " + BEST_PRICE);
 			}
 			ID_OFFER = idListOffers;
 			if(ID_OFFER){
 				arrayFindString.push("[ID_OFFER]");
 				arrayNwString.push(ID_OFFER);
+				console.log("ID_OFFER: " + ID_OFFER);
 			}
 			if(objectOffer){
 				userSenderProfessional = objectOffer.get("idUserResponder");
@@ -791,16 +797,19 @@ function sendAllMessage(request){
 				if(CREATEDAT_OFFER){
 					arrayFindString.push("[CREATEDAT_OFFER]");
 					arrayNwString.push(CREATEDAT_OFFER);
+					console.log("CREATEDAT_OFFER: " + CREATEDAT_OFFER);
 				}
 				NAME_USER_PROFESSIONAL = userSenderProfessional.get("fullName");
 				if(NAME_USER_PROFESSIONAL){
 					arrayFindString.push("[NAME_USER_PROFESSIONAL]");
 					arrayNwString.push(NAME_USER_PROFESSIONAL);
+					console.log("NAME_USER_PROFESSIONAL: " + NAME_USER_PROFESSIONAL);
 				}
 				PRICE_OFFER = objectOffer.get("price");
 				if(PRICE_OFFER){
 					arrayFindString.push("[PRICE_OFFER]");
 					arrayNwString.push(PRICE_OFFER);
+					console.log("PRICE_OFFER: " + PRICE_OFFER);
 				}
 			}
 			console.log("END-SET-VARIABLES");
