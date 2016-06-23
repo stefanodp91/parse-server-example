@@ -298,7 +298,7 @@ function configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCod
 			return(error);
 		});
 		
-	}
+	});
 	
 			
 			
