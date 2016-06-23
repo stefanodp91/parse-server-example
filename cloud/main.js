@@ -750,7 +750,9 @@ function sendAllMessage(request){
 				arrayAllEmailTo.push(results4[i]);
 				//console.log(i + ") result4");
 				//console.log(results4[i]);
-			}	
+			}
+			arrayFindString.length = 0;
+			arrayNwString.length = 0;
 			//console.log("\n objectRequest: "+objectRequest);  
 			userSenderClient = objectRequest.get("idUserRequest");
 			//var idUserRequest = userSenderClient.id;
