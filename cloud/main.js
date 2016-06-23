@@ -61,7 +61,7 @@ function getEmailTemplates(lang,type){
 
 function getRequestDetail(idListForms){
 	"use strict";
-	console.log("\n +++++++++ STEP 2\n "+idListForms + "\n");
+//	console.log("\n +++++++++ STEP 2\n "+idListForms + "\n");
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserRequest');
@@ -78,19 +78,19 @@ function getRequestDetail(idListForms){
 	    });
 	    */
     
-	console.log("getRequestDetail: " + myres);
+//	console.log("getRequestDetail: " + myres);
 	return myres;
 }
 
 function getOfferDetail(idListOffers){
 	"use strict";
-	console.log("\n +++++++++ STEP 3\n "+idListOffers + "\n");
+//	console.log("\n +++++++++ STEP 3\n "+idListOffers + "\n");
 	if(idListOffers){
 		var query = new Parse.Query("ListOffers");
 		query.equalTo("objectId", idListOffers);
 		query.include('idUserResponder');
 		var myres = query.first();
-		console.log("getOfferDetail: " + myres);
+//		console.log("getOfferDetail: " + myres);
 		return myres;
 	}
 	return;
@@ -98,7 +98,7 @@ function getOfferDetail(idListOffers){
 
 function getListAllEmailProfessional(){
 	"use strict";
-	console.log("\n +++++++++ STEP 4 getListAllEmailProfessional\n ");
+//	console.log("\n +++++++++ STEP 4 getListAllEmailProfessional\n ");
 	
 	var query = new Parse.Query("Professional");
 	query.include('idUser');
@@ -108,13 +108,13 @@ function getListAllEmailProfessional(){
 	query.include('idProfessional');
 	*/
 	var myres = query.find();
-	console.log("getListAllEmailProfessional : "+ myres);
+//	console.log("getListAllEmailProfessional : "+ myres);
 	return myres;
 }
 
 function getListEmailProfessionalSentOffer(idListForms){
 	"use strict";
-	console.log("\n +++++++++ STEP 4 getListEmailProfessionalSentOffer ++++++++++++\n"+idListForms);
+//	console.log("\n +++++++++ STEP 4 getListEmailProfessionalSentOffer ++++++++++++\n"+idListForms);
 	var Form = Parse.Object.extend("ListForms");
 	var form = new Form();
 	form.id = idListForms;
@@ -127,7 +127,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 
 function getLEmailLastBestOffer(idListForms){
 	"use strict";
-	console.log("\n +++++++++ STEP 4 getLEmailLastBestOffer ++++++++++++\n"+idListForms);
+//	console.log("\n +++++++++ STEP 4 getLEmailLastBestOffer ++++++++++++\n"+idListForms);
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
 	query.include('idUserResponder');
@@ -136,7 +136,7 @@ function getLEmailLastBestOffer(idListForms){
 
 function replaceString(string){
 	"use strict";
-	//console.log("\n *********** replaceString START ************"+string);
+	console.log("\n *********** replaceString START ************"+string);
 	//[NAME_APP]
 	//[ID_REQUEST]
 	//[CREATEDAT_REQUEST]
@@ -154,7 +154,7 @@ function replaceString(string){
 			//console.log("\n newString: "+newString+"  arrayFind:"+arrayFindString[i] + " arrayNwString: "+arrayNwString[i]);
 		}
   	}
-	//console.log("\n *********** replaceString END ************* newString: "+newString);
+	console.log("\n *********** replaceString END ************* newString: "+newString);
 	return newString;
 }
 
@@ -748,12 +748,13 @@ function sendAllMessage(request){
 				
 			for (i = 0; i < results4.length; i++) {
 				arrayAllEmailTo.push(results4[i]);
-				console.log(i + ") result4");
-				console.log(results4[i]);
+				//console.log(i + ") result4");
+				//console.log(results4[i]);
 			}	
 			//console.log("\n objectRequest: "+objectRequest);  
 			userSenderClient = objectRequest.get("idUserRequest");
 			//var idUserRequest = userSenderClient.id;
+			console.log("START-SET-VARIABLES");
 			NAME_APP = appName;
 			if(NAME_APP){
 				arrayFindString.push("[NAME_APP]");
@@ -802,7 +803,9 @@ function sendAllMessage(request){
 					arrayNwString.push(PRICE_OFFER);
 				}
 			}
-			console.log("arrayEmailTemplate");  
+			console.log("END-SET-VARIABLES");
+			
+			//console.log("arrayEmailTemplate");  
 			//console.log("\n job1: "+arrayEmailTemplate);  
 			//console.log("\n job2: "+userSenderClient); 
 			//------------------------------------------------------//
@@ -832,7 +835,7 @@ function sendAllMessage(request){
 				var badge = 1;
 				
 				if(type === TYPE_NEW_REQUEST ){
-					console.log("configNotification");
+					console.log("TYPE_NEW_REQUEST");
 					if(typeCode === 10){
 						// - invio email di conferma nuova richiesta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
@@ -875,6 +878,7 @@ function sendAllMessage(request){
 					}
 				} // end type === TYPE_NEW_REQUEST
 				else if(type === TYPE_CANCELED_REQUEST){
+					console.log("TYPE_CANCELED_REQUEST");
 					if(typeCode === 10){
 						// - invio email di conferma eliminazione al cliente e all'amministratore
 						//console.log("\n ------TYPE_CANCELED_REQUEST : "+userSenderClient.get("email"));
@@ -911,6 +915,7 @@ function sendAllMessage(request){
 					}
 				} // end if(type === TYPE_CANCELED_REQUEST)
 				else if(type === TYPE_NEW_OFFER){
+					console.log("TYPE_NEW_OFFER");
 					if(typeCode === 10){
 						// - invio email di una nuova offerta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
@@ -998,6 +1003,7 @@ function sendAllMessage(request){
 					}
 				} // end if(type === TYPE_NEW_OFFER)
 				else if(type === TYPE_ACCEPTED_OFFER){
+					console.log("TYPE_ACCEPTED_OFFER");
 					if(typeCode === 10){
 						// - invio email di una nuova offerta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
@@ -1056,10 +1062,10 @@ function sendAllMessage(request){
 
 			// Invio notifiche in serie 
 			var promise = Parse.Promise.as();
-            promises.forEach(function(p){
-                promise = promise.then(p);
+            		promises.forEach(function(p){
+                		promise = promise.then(p);
                  
-            });
+            		});
             
             return promise;
  
