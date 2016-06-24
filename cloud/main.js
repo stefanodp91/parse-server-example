@@ -860,10 +860,7 @@ function sendAllMessage(request){
 						// - invio email di nuova richiesta a tutti i professionisti e all'amministratore
 						//console.log("\n ------arrayAllEmailProfessional : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
-						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
-						{
-							console.log(arrayAllEmailTo[ii].get("idUser").get("email")+" ------ " + arrayAllEmailTo[ii].get("idUser")._sessionToken);
-						}
+						arrayToEmail.push(userSenderClient.get("email"));
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUser");
