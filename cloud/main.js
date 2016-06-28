@@ -452,16 +452,7 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	//targetUser.id = idTo;
 	var userQuery = new Parse.Query(Parse.User);
 	userQuery.equalTo("objectId", idTo);
-	userQuery.first({
-		success: function(user){
-			console.log("USER TO notofication: ");
-			console.log(user);
-		},
-		error: function(error){
-			console.log("Error userQuery for notification: ");
-			console.log(error);
-		}
-	})
+	
 	pushQuery.matchesQuery("user", userQuery);
 	
 	console.log("Test PreSendPush");
@@ -485,6 +476,16 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	{
 		success: function(){
 			console.log("NOTIFICATION-SEND success!!! -> "+ idTo);
+			userQuery.first({
+				success: function(user){
+					console.log("USER TO notofication: ");
+					console.log(user);
+				},
+				error: function(error){
+					console.log("Error userQuery for notification: ");
+					console.log(error);
+				}
+			})
 			
 		},
 		error: function (error) {
