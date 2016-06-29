@@ -1196,7 +1196,7 @@ Parse.Cloud.define("deleteUserWithId", function(request, response) {
     
     query.first({
 		success: function(user){
-			console.log(user.id);
+			console.log("Delete User: " + user.id);
 			user.destroy({
 				success: function(){
 					console.log("user DESTROIED");
