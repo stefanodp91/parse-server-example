@@ -1207,6 +1207,7 @@ Parse.Cloud.define("deleteUserWithId", function(request, response) {
 		},	useMasterKey: true
 	
 	});
+});
 
 
 Parse.Cloud.define('hello', function(req, res) {
