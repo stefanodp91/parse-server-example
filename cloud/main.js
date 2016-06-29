@@ -1188,6 +1188,22 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 
 });
 
+Parse.Cloud.define("deleteUserWithId", function(request, response) {
+    //Parse.Cloud.useMasterKey();
+    var userId = request.params.userId;
+    var query = new Parse.Query(Parse.User);
+    query.equal("objectId", userId);
+    
+    query.first().then(function(user) {
+        return user.destroy();
+    }).then(function() {
+        response.success("user DELETED");
+    }, function(error) {
+        response.error(error);
+    }, useMasterKey: true;
+    );
+});
+
 
 Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
