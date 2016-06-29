@@ -1192,7 +1192,7 @@ Parse.Cloud.define("deleteUserWithId", function(request, response) {
     //Parse.Cloud.useMasterKey();
     var userId = request.params.userId;
     var query = new Parse.Query(Parse.User);
-    query.equal("objectId", userId);
+    query.equalTo("objectId", userId);
     
     query.first({
 		success: function(user){
