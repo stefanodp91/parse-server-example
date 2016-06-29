@@ -1194,15 +1194,19 @@ Parse.Cloud.define("deleteUserWithId", function(request, response) {
     var query = new Parse.Query(Parse.User);
     query.equal("objectId", userId);
     
-    query.first().then(function(user) {
-        return user.destroy();
-    }).then(function() {
-        response.success("user DELETED");
-    }, function(error) {
-        response.error(error);
-    }, useMasterKey: true;
-    );
-});
+    query.first({
+		success: function(user){
+			user.destroy();
+			console.log("user DESTROIED");
+			response.success('user DESTROIED');
+		},
+		error: function (error) {
+			console.log("ERROR user DESTROIED");
+			console.log(error);
+			response.error('ERROR user DESTROIED');
+		},	useMasterKey: true
+	
+	});
 
 
 Parse.Cloud.define('hello', function(req, res) {
