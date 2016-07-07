@@ -30,6 +30,7 @@ var TYPE_NEW_REQUEST = "TYPE_NEW_REQUEST";
 var TYPE_CANCELED_REQUEST = "TYPE_CANCELED_REQUEST";
 var TYPE_NEW_OFFER = "TYPE_NEW_OFFER";
 var TYPE_ACCEPTED_OFFER = "TYPE_ACCEPTED_OFFER";
+var TYPE_WELLCOME = "TYPE_WELLCOME;"
 
 var DEFAULT_LANG = 'it-IT';
 var DEFAULT_ADMIN_EMAIL = 'admin@rukku.com';
@@ -652,7 +653,8 @@ function sendAllMessage(request){
 	var idListForms = request.params.idListForms;
 	var idListOffers = request.params.idListOffers;
 	var arrayEmailTemplate = new Array;
-
+	
+	
 	console.log("lang: " + lang);
 	console.log("type: " +type);
 	console.log("emailAdmin: " +emailAdmin);
@@ -1128,7 +1130,9 @@ function sendAllMessage(request){
 	}
 	);
 	
-}		
+}	
+
+
 
 
 
@@ -1157,7 +1161,13 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 
 	Parse.Promise.when(prepare).then(function(request) {
 			  // all done
-		sendAllMessage(request);
+		var type = request.type;
+		console.log("PREPARE MESSAGE: " + type);
+		if(type == TYPE_WELLCOME){
+			console.log("WELLCOME");
+		}else{
+			sendAllMessage(request);
+		}
 	  	console.log("OK MESSAGE SAND");
 	  	response.success("Respnse: OK MESSAGE SAND");
 	}, 	function(error) {
