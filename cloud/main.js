@@ -1354,13 +1354,14 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 //Type: TYPE_WELLCOME
 //TypeCode: 
 //	10 = nuovo utente
-//	20 = amministratore (ToDo)
+//	20 = amministratore
 function sendWellcomeMessage(request){
 	console.log("* sendWellcomeMessage * ");
 	var idUser = request.params.idUser;
 	var lang = request.params.lang;
 	var type = request.params.typeSendEmail;
 	var appName = request.params.appName;
+	var emailAdmin = request.params.emailAdmin;
 	
 	var query = new Parse.Query("_User");
 	query.equalTo("objectId", idUser);
@@ -1395,8 +1396,8 @@ function sendWellcomeMessage(request){
 				var fromEmail = template.get("fromEmail");
 				console.log(subject);
 				console.log(body);
-				if(template.get("typeCode")==10){
-					console.log("SEND TO USER");
+				var typeCode = template.get("typeCode");
+				if(typeCode"==10){
 					var data = {
 						"fromEmail" : fromEmail,
 						"toEmail" : toEmail,
@@ -1404,6 +1405,15 @@ function sendWellcomeMessage(request){
 						"type" : type,
 						"bodyEmail" : body
 					}	
+				}
+				else if (typeCode == 20){
+					var data = {
+						"fromEmail" : fromEmail,
+						"toEmail" : emailAdmin,
+						"subjectEmail" : subject,
+						"type" : type,
+						"bodyEmail" : body
+					}
 				}
 				sendEmail(data);
 				
