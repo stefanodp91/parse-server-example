@@ -1150,7 +1150,7 @@ function sendWellcomeMessage(request){
 	  	console.log(error);
 	  	response.error(error);
 	});	
-	);
+	
 
 	
 }
