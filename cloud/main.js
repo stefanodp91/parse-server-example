@@ -1375,12 +1375,22 @@ function sendWellcomeMessage(request){
 			"NAME_USER_CLIENT": username
 		}
 		
-		prepareTemplate(paramTemplate);
+		var parameterArray = getParamTemplate(paramTemplate);
+		//recuperare il template 
+		var functionGetEmailTemplates = getEmailTemplates(lang,type);
 		
-		
-		
-		
-		
+		//per ogni template recuperare il testo e passarlo a replaceTemplate(testo, parameterArray);
+		Parse.Promise.when(functionGetEmailTemplates).then(function (results){
+			var emailTemplates = results[0];
+			emailTemplates.forEach(function (template){
+				console.log(template.subjectEmail);
+				console.log(template.bodyEmail);	
+			});
+			
+			
+		});
+		//(stamparlo nel log)
+
 
 	}, function(error) {
 	  	// error
@@ -1391,7 +1401,7 @@ function sendWellcomeMessage(request){
 
 }
 
-function prepareTemplate(param){
+function getParamTemplate(param){
 	var arrayFindString = new Array;
 	var arrayNwString = new Array;
 	
@@ -1411,10 +1421,31 @@ function prepareTemplate(param){
 		arrayFindString.push("[ID_REQUEST]");
 		arrayNwString.push(param.ID_REQUEST);
 		console.log("ID_REQUEST: " + param.ID_REQUEST);
-	}else{
-		console.log("Not ID_REQUEST");
+	}
+	
+	var returnArray = {
+		"arrayLbl": arrayFindString,
+		"arrayValue": arrayNwString
 	}
 	
 	
+	return returnArray;
+}
+
+function replaceTemplate(template, p){
+	"use strict";
+	console.log("*********** replaceString START ************"+string);
+	var arrayLbl = p.arrayLbl;
+	var arrayValue = p.arrayValue;
 	
+	var string = template;
+	var newString = string;
+  	for (var i = 0; i < arrayLbl.length; i++) {
+		if(arrayValue[i]){
+			newString = newString.split(arrayLbl[i]).join(arrayValue[i]); //Replace all instances of a substring
+
+		}
+  	}
+	console.log("*********** replaceString END ************* newString: "+newString);
+	return newString;
 }
