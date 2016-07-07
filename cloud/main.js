@@ -1133,92 +1133,8 @@ function sendAllMessage(request){
 }	
 
 
-function sendWellcomeMessage(request){
-	console.log("* sendWellcomeMessage * ");
-	var idUser = request.params.idUser;
-	var query = new Parse.Query("_User");
-	query.equalTo("objectId", idUser);
-	query.first().then(function (user){
-		var username = user.get("username");
-		var email = user.get("email");
-		console.log(username);
-		console.log(email);
-		
-		
-	}, function(error) {
-	  	// error
-	  	console.log("***********ERROR: find User WellCome *************");
-	  	console.log(error);
-	  	response.error(error);
-	});	
-	
-
-	
-}
 
 
-
-Parse.Cloud.define("sendMessages", function(request, response) {
-	//"use strict";
-	
-	console.log("* prepareMessageParameter *");
-	var lang = request.params.lang;
-	var type = request.params.typeSendEmail;
-	//control default template
-	var query = new Parse.Query("EmailConfig");
-	query.equalTo("lang", lang);
-	query.equalTo("type", type);
-	var prepare = query.count().then(function(num){
-		//console.log("num: " + num);
-		if(num==0){
-			console.log("DEFAULT_LANG: " + DEFAULT_LANG);
-			request.params.lang = DEFAULT_LANG;
-		}
-		return request;
-		
-	});
-
-	//var prepareParameter = prepareMessageParameter(request);
-
-	Parse.Promise.when(prepare).then(function(request) {
-			  // all done
-		var type = request.params.typeSendEmail;
-		console.log("PREPARE MESSAGE: " + type);
-		if(type == TYPE_WELLCOME){
-			console.log("WELLCOME");
-			sendWellcomeMessage(request);
-		}else{
-			sendAllMessage(request);
-		}
-	  	console.log("OK MESSAGE SAND");
-	  	response.success("Respnse: OK MESSAGE SAND");
-	}, 	function(error) {
-	  	// error
-	  	console.log("***********ERROR SEND MESSAGE *************");
-	  	console.log(error);
-	  	response.error(error);
-	});	
-
-	/*
-		//console.log("OK MESSAGE SAND");
-	var callback = function(request){
-		var sendMessageCallback = function(result){
-			if(result){
-				response.success("OK MESSAGE SAND");
-			}else{
-				response.success("ERROR to SAND MESSAGE");
-			}
-		}
-		sendMessages(request, sendMessageCallback);
-	}
-	prepareMessageParameter(request, callback);
-  	*/	
-	
-			 
-  	//console.log("OK MESSAGE SAND");
-  	//response.success("OK MESSAGE SAND");
-
-});
 
 Parse.Cloud.define("deleteUserWithId", function(request, response) {
     //Parse.Cloud.useMasterKey();
@@ -1380,3 +1296,125 @@ Parse.Cloud.define('testEmail', function(req, res) {
 	});
  	
 });
+
+//***************************************************************************
+//************************ REFACTORING **************************************
+//***************************************************************************
+
+Parse.Cloud.define("sendMessages", function(request, response) {
+	//"use strict";
+	
+	console.log("* prepareMessageParameter *");
+	var lang = request.params.lang;
+	var type = request.params.typeSendEmail;
+	//control default template
+	var query = new Parse.Query("EmailConfig");
+	query.equalTo("lang", lang);
+	query.equalTo("type", type);
+	var prepare = query.count().then(function(num){
+		//console.log("num: " + num);
+		if(num==0){
+			console.log("DEFAULT_LANG: " + DEFAULT_LANG);
+			request.params.lang = DEFAULT_LANG;
+		}
+		return request;
+		
+	});
+
+	//var prepareParameter = prepareMessageParameter(request);
+
+	Parse.Promise.when(prepare).then(function(request) {
+			  // all done
+		var type = request.params.typeSendEmail;
+		console.log("PREPARE MESSAGE: " + type);
+		//separare le funzioni in base al tipo
+		if(type == TYPE_WELLCOME){
+			console.log("WELLCOME");
+			sendWellcomeMessage(request);
+		}else{
+			sendAllMessage(request);
+		}
+	  	console.log("OK MESSAGE SAND");
+	  	response.success("Respnse: OK MESSAGE SAND");
+	}, 	function(error) {
+	  	// error
+	  	console.log("***********ERROR SEND MESSAGE *************");
+	  	console.log(error);
+	  	response.error(error);
+	});	
+
+	
+
+});
+
+
+// email di benvenuto 
+//Type: TYPE_WELLCOME
+//TypeCode: 
+//	10 = nuovo utente
+//	20 = amministratore (ToDo)
+function sendWellcomeMessage(request){
+	console.log("* sendWellcomeMessage * ");
+	var idUser = request.params.idUser;
+	var lang = request.params.lang;
+	var type = request.params.typeSendEmail;
+	var appName = request.params.appName;
+	
+	var query = new Parse.Query("_User");
+	query.equalTo("objectId", idUser);
+	query.first().then(function (user){
+		var username = user.get("username");
+		var email = user.get("email");
+		console.log(lang);
+		console.log(type);
+		console.log(username);
+		console.log(email);
+		
+		var paramTemplate = {
+			"NAME_APP" = appName,
+			"NAME_USER_CLIENT" = username
+		}
+		
+		prepareTemplate(paramTemplate);
+		
+		
+		
+		
+		
+
+	}, function(error) {
+	  	// error
+	  	console.log("***********ERROR: find User WellCome *************");
+	  	console.log(error);
+	  	response.error(error);
+	});	
+
+}
+
+function prepareTemplate(param){
+	var arrayFindString = new Array;
+	var arrayNwString = new Array;
+	
+	if(param.NAME_APP){
+		arrayFindString.push("[NAME_APP]");
+		arrayNwString.push(param.NAME_APP);
+		console.log("NAME_APP: " + param.NAME_APP);
+	}
+	
+	if(param.NAME_USER_CLIENT){
+		arrayFindString.push("[NAME_USER_CLIENT]");
+		arrayNwString.push(param.NAME_USER_CLIENT);
+		console.log("NAME_USER_CLIENT: " + param.NAME_USER_CLIENT);
+	}
+	
+	if(param.ID_REQUEST){
+		arrayFindString.push("[ID_REQUEST]");
+		arrayNwString.push(param.ID_REQUEST);
+		console.log("ID_REQUEST: " + param.ID_REQUEST);
+	}else{
+		console.log("Not ID_REQUEST");
+	}
+	
+	
+	
+}
