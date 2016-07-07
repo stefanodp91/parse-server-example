@@ -354,7 +354,7 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 	var toEmail = request.params.toEmail;
   	var bodyEmail = request.params.bodyEmail;
   	var subjectEmail = request.params.subjectEmail;
-  	var idListForms = request.params.idListForms;
+  //	var idListForms = request.params.idListForms;
   	var typeSendEmail = request.params.type;
   	var htmlBody = bodyEmail;
   	
@@ -381,9 +381,11 @@ Parse.Cloud.define("sendEmail", function(request, response) {
 		//console.log("idListForms: " + idListForms);
 		if(typeSendEmail == TYPE_ACCEPTED_OFFER){
 			console.log("send email: " + typeSendEmail);
-			console.log("idForms: " + request.params.idListForms);
-			//da idListForms ricavo l'idOfferAccepted che mi servirà per identificare l'id del Paganmento in Payment
-			checkNotification(request.params.idListForms, toEmail, true);
+			if(request.params.idListForms){
+				console.log("idForms: " + request.params.idListForms);
+				//da idListForms ricavo l'idOfferAccepted che mi servirà per identificare l'id del Paganmento in Payment
+				checkNotification(request.params.idListForms, toEmail, true);
+			}
 
 
 		}
@@ -1327,7 +1329,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 			  // all done
 		var type = request.params.typeSendEmail;
 		console.log("PREPARE MESSAGE: " + type);
-		//separare le funzioni in base al tipo
+		//separare la funzione "sendAllMessage" in più funzioni in base al tipo
 		if(type == TYPE_WELLCOME){
 			console.log("WELLCOME");
 			sendWellcomeMessage(request);
@@ -1364,12 +1366,13 @@ function sendWellcomeMessage(request){
 	query.equalTo("objectId", idUser);
 	query.first().then(function (user){
 		var username = user.get("username");
-		var email = user.get("email");
+		var toEmail = user.get("email");
 		console.log(lang);
 		console.log(type);
 		console.log(username);
-		console.log(email);
+		console.log(toEmail);
 		
+		//preparo i parametri per il template
 		var paramTemplate = {
 			"NAME_APP": appName,
 			"NAME_USER_CLIENT": username
@@ -1389,8 +1392,22 @@ function sendWellcomeMessage(request){
 				console.log(template.get("bodyEmail"));	
 				var subject = replaceTemplate(template.get("subjectEmail"), parameterArray);
 				var body = replaceTemplate(template.get("bodyEmail"), parameterArray);
+				var fromEmail = template.get("fromEmail");
 				console.log(subject);
 				console.log(body);
+				if(template.get("typeCode")==10){
+					console.log("SEND TO USER");
+					var data = {
+						"fromEmail" : fromEmail,
+						"toEmail" : toEmail,
+						"subjectEmail" : subject,
+						"type" : type,
+						"bodyEmail" : body
+					}	
+				}
+				sendEmail(data);
+				
+				
 			});
 			
 			
@@ -1405,6 +1422,16 @@ function sendWellcomeMessage(request){
 	  	response.error(error);
 	});	
 
+}
+
+function sendEmail(param){
+	Parse.Cloud.run('sendEmail', param ).then(function(resp) {
+		console.log(resp);
+		//return(resp);
+	}, function(error) {
+		console.log(error);
+		return(error);
+	});
 }
 
 function getParamTemplate(param){
