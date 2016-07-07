@@ -1386,6 +1386,7 @@ function sendWellcomeMessage(request){
 			console.log("promise");
 			console.log(results);
 			var emailTemplates = results[0];
+			console.log(emailTemplates);
 			emailTemplates.forEach(function (template){
 				console.log("TEMplate");
 				console.log(template);
