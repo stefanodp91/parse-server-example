@@ -1350,8 +1350,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 });
 
 
-// email di benvenuto 
-//Type: TYPE_WELLCOME
+//Type: TYPE_WELLCOME  (email di benvenuto da inviare alla registrazione) 
 //TypeCode: 
 //	10 = nuovo utente
 //	20 = amministratore
@@ -1397,7 +1396,7 @@ function sendWellcomeMessage(request){
 				console.log(subject);
 				console.log(body);
 				var typeCode = template.get("typeCode");
-				if(typeCode"==10){
+				if(typeCode==10){
 					var data = {
 						"fromEmail" : fromEmail,
 						"toEmail" : toEmail,
