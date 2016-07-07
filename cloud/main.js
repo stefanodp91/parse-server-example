@@ -1387,8 +1387,8 @@ function sendWellcomeMessage(request){
 			console.log(results);
 			var emailTemplates = results[0];
 			emailTemplates.forEach(function (template){
-				console.log(template.subjectEmail);
-				console.log(template.bodyEmail);	
+				console.log(template.get("subjectEmail"));
+				console.log(template.get("bodyEmail"));	
 			});
 			
 			
