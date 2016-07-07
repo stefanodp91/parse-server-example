@@ -1371,8 +1371,8 @@ function sendWellcomeMessage(request){
 		console.log(email);
 		
 		var paramTemplate = {
-			"NAME_APP" = appName,
-			"NAME_USER_CLIENT" = username
+			"NAME_APP": appName,
+			"NAME_USER_CLIENT": username
 		}
 		
 		prepareTemplate(paramTemplate);
