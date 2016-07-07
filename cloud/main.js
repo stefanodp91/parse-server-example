@@ -1134,6 +1134,7 @@ function sendAllMessage(request){
 
 
 function sendWellcomeMessage(request){
+	console.log("* sendWellcomeMessage * ");
 	var idUser = request.params.idUser;
 	var query = new Parse.Query("_User");
 	query.equalTo("objectId", idUser);
