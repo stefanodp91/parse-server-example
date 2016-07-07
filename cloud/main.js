@@ -1133,7 +1133,27 @@ function sendAllMessage(request){
 }	
 
 
+function sendWellcomeMessage(request){
+	var idUser = request.params.idUser;
+	var query = new Parse.Query("_User");
+	query.equalTo("objectId", idUser);
+	query.first().then(function (user){
+		var username = user.get("username");
+		var email = user.get("email");
+		console.log(username);
+		console.log(email);
+		
+		
+	}, function(error) {
+	  	// error
+	  	console.log("***********ERROR: find User WellCome *************");
+	  	console.log(error);
+	  	response.error(error);
+	});	
+	);
 
+	
+}
 
 
 
@@ -1165,6 +1185,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 		console.log("PREPARE MESSAGE: " + type);
 		if(type == TYPE_WELLCOME){
 			console.log("WELLCOME");
+			sendWellcomeMessage(request);
 		}else{
 			sendAllMessage(request);
 		}
