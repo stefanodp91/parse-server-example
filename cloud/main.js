@@ -1378,18 +1378,19 @@ function sendWellcomeMessage(request){
 		var parameterArray = getParamTemplate(paramTemplate);
 		
 		//recuperare il template 
-		console.log("get Template");
 		var functionGetEmailTemplates = getEmailTemplates(lang,type);
-		console.log("Pre Promise");
-		//per ogni template recuperare il testo e passarlo a replaceTemplate(testo, parameterArray);
+
+		//per ogni template recupero il testo e lo passo a 'replaceTemplate'
 		Parse.Promise.when(functionGetEmailTemplates).then(function (emailTemplates){
 		
 			console.log(emailTemplates);
 			emailTemplates.forEach(function (template){
-				console.log("TEMplate");
-				console.log(template);
 				console.log(template.get("subjectEmail"));
 				console.log(template.get("bodyEmail"));	
+				var subject = replaceTemplate(template.get("subjectEmail"), parameterArray);
+				var body = replaceTemplate(template.get("bodyEmail"), parameterArray);
+				console.log(subject);
+				console.log(body);
 			});
 			
 			
