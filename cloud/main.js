@@ -1382,10 +1382,8 @@ function sendWellcomeMessage(request){
 		var functionGetEmailTemplates = getEmailTemplates(lang,type);
 		console.log("Pre Promise");
 		//per ogni template recuperare il testo e passarlo a replaceTemplate(testo, parameterArray);
-		Parse.Promise.when(functionGetEmailTemplates).then(function (results){
-			console.log("promise");
-			console.log(results);
-			var emailTemplates = results[0];
+		Parse.Promise.when(functionGetEmailTemplates).then(function (emailTemplates){
+		
 			console.log(emailTemplates);
 			emailTemplates.forEach(function (template){
 				console.log("TEMplate");
