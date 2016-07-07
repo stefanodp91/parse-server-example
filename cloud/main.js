@@ -1161,7 +1161,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 
 	Parse.Promise.when(prepare).then(function(request) {
 			  // all done
-		var type = request.type;
+		var type = request.params.typeSendEmail;
 		console.log("PREPARE MESSAGE: " + type);
 		if(type == TYPE_WELLCOME){
 			console.log("WELLCOME");
