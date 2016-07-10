@@ -1388,8 +1388,8 @@ function sendWellcomeMessage(request){
 		
 			console.log(emailTemplates);
 			emailTemplates.forEach(function (template){
-				console.log(template.get("subjectEmail"));
-				console.log(template.get("bodyEmail"));	
+				//console.log(template.get("subjectEmail"));
+				//console.log(template.get("bodyEmail"));	
 				var subject = replaceTemplate(template.get("subjectEmail"), parameterArray);
 				var body = replaceTemplate(template.get("bodyEmail"), parameterArray);
 				var fromEmail = template.get("fromEmail");
@@ -1446,6 +1446,8 @@ function sendEmail(param){
 function getParamTemplate(param){
 	var arrayFindString = new Array;
 	var arrayNwString = new Array;
+	//TODO: separare header, footer e social nei teplate
+	//
 	
 	if(param.NAME_APP){
 		arrayFindString.push("[NAME_APP]");
