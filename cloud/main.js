@@ -1136,8 +1136,10 @@ function sendAllMessage(request){
 
 
 
-
-
+/*
+Parameters: 
+	userId (id dell'utente da eliminare)
+*/	
 Parse.Cloud.define("deleteUserWithId", function(request, response) {
     //Parse.Cloud.useMasterKey();
     var userId = request.params.userId;
