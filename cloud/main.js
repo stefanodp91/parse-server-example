@@ -1517,7 +1517,9 @@ function recoveryPassword(request){
 		success: function(user){
 			console.log("User: " + user.id);
 			console.log(user);
-			user.setPassword(newPassword);
+			console.log("user Find success");
+			//user.setPassword(newPassword);
+			user.set("username","giuseppe");
 			user.save(null, { useMasterKey: true }).then( function(user){
 				console.log("NEW Password Recovered");
 				console.log(user);
@@ -1528,7 +1530,7 @@ function recoveryPassword(request){
 			  	console.log(error);
 			  	
 			});	
-			console.log("user Find success");
+			
 			
 		},
 		error: function (error) {
