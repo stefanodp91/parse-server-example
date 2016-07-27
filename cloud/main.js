@@ -1137,42 +1137,7 @@ function sendAllMessage(request){
 
 
 
-/*
-Parameters: 
-	userId (id dell'utente da eliminare)
-*/	
-Parse.Cloud.define("deleteUserWithId", function(request, response) {
-    //Parse.Cloud.useMasterKey();
-    var userId = request.params.userId;
-    var query = new Parse.Query(Parse.User);
-    query.equalTo("objectId", userId);
-    
-    query.first({
-		success: function(user){
-			console.log("Delete User: " + user.id);
-			user.destroy({
-				success: function(){
-					console.log("user DESTROIED");
-					response.success('user DESTROIED');
-				},
-				error: function(){
-					console.log("ERROR user DESTROIED");
-					response.error('ERROR user DESTROIED');
-					
-				}, useMasterKey: true
-				
-			});
-			console.log("user Find success");
-			
-		},
-		error: function (error) {
-			console.log("ERROR Find User");
-			console.log(error);
-			response.error('ERROR Find User');
-		},	useMasterKey: true
-	
-	});
-});
+
 
 
 Parse.Cloud.define('hello', function(req, res) {
@@ -1521,18 +1486,71 @@ function sendWellcomeMessage(request){
 //	''
 // 	userEmail
 function recoveryPassword(request){
+	"use strict";
 	console.log("* recoveryPassword * ");
 	var userEmail = request.params.userEmail;
 	var lang = request.params.lang;
 	var type = request.params.typeSendEmail;
 	var appName = request.params.appName;
 	var emailAdmin = request.params.emailAdmin;
-	
 	console.log("EMAIL: " + userEmail);
+	
+    	var query = new Parse.Query(Parse.User);
+    	query.equalTo("email", userEmail);
+    
+    	query.first({
+		success: function(user){
+			console.log("User: " + user.id);
+			console.log(user);
+			console.log("user Find success");
+			
+		},
+		error: function (error) {
+			console.log("ERROR Find User");
+			console.log(error);
+			response.error('ERROR Find User');
+		},	useMasterKey: true
+	
+	});
 	
 	
 }
 
-
+/*
+Parameters: 
+	userId (id dell'utente da eliminare)
+*/	
+Parse.Cloud.define("deleteUserWithId", function(request, response) {
+    //Parse.Cloud.useMasterKey();
+    var userId = request.params.userId;
+    var query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", userId);
+    
+    query.first({
+		success: function(user){
+			console.log("Delete User: " + user.id);
+			user.destroy({
+				success: function(){
+					console.log("user DESTROIED");
+					response.success('user DESTROIED');
+				},
+				error: function(){
+					console.log("ERROR user DESTROIED");
+					response.error('ERROR user DESTROIED');
+					
+				}, useMasterKey: true
+				
+			});
+			console.log("user Find success");
+			
+		},
+		error: function (error) {
+			console.log("ERROR Find User");
+			console.log(error);
+			response.error('ERROR Find User');
+		},	useMasterKey: true
+	
+	});
+});
 
 
