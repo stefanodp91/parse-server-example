@@ -1500,7 +1500,7 @@ function recoveryPassword(request){
 	
     	var query = new Parse.Query(Parse.User);
     	query.equalTo("email", userEmail);
-    	Parse.User.requestPasswordReset("email@example.com", {
+    	Parse.User.requestPasswordReset(userEmail, {
 	  	success: function() {
 		  	// Password reset request was sent successfully
 		  	console.log("Password RESETED");
