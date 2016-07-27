@@ -1548,7 +1548,7 @@ function recoveryPassword(request){
 						if(typeCode==10){
 							var data = {
 								"fromEmail" : fromEmail,
-								"toEmail" : toEmail,
+								"toEmail" : userEmail,
 								"subjectEmail" : subject,
 								"type" : type,
 								"bodyEmail" : body
