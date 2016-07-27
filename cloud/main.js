@@ -1506,15 +1506,17 @@ function recoveryPassword(request){
 			console.log("User: " + user.id);
 			console.log(user);
 			user.set("password",newPassword);
-			user.save().then(
-				  	function(user) {
-				    		console.log('Password changed', user);
-				  	},
-				  	function(error) {
-				    		console.log('Something chance password');
-				    		console.error(error);
-				  	}
-				);
+			user.save({
+				success: function(user){
+					console.log("SET new passuord: success");
+				},
+				error: function(error){
+					console.log("Error set password");
+					console.error('error');
+					
+				}, useMasterKey: true
+				
+			});
 			console.log("user Find success");
 			
 		},
