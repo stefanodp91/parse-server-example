@@ -1369,6 +1369,67 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 });
 
 
+function sendEmail(param){
+	Parse.Cloud.run('sendEmail', param ).then(function(resp) {
+		console.log(resp);
+		//return(resp);
+	}, function(error) {
+		console.log(error);
+		return(error);
+	});
+}
+
+function getParamTemplate(param){
+	var arrayFindString = new Array;
+	var arrayNwString = new Array;
+	//TODO: separare header, footer e social nei teplate
+	//
+	
+	if(param.NAME_APP){
+		arrayFindString.push("[NAME_APP]");
+		arrayNwString.push(param.NAME_APP);
+		console.log("NAME_APP: " + param.NAME_APP);
+	}
+	
+	if(param.NAME_USER_CLIENT){
+		arrayFindString.push("[NAME_USER_CLIENT]");
+		arrayNwString.push(param.NAME_USER_CLIENT);
+		console.log("NAME_USER_CLIENT: " + param.NAME_USER_CLIENT);
+	}
+	
+	if(param.ID_REQUEST){
+		arrayFindString.push("[ID_REQUEST]");
+		arrayNwString.push(param.ID_REQUEST);
+		console.log("ID_REQUEST: " + param.ID_REQUEST);
+	}
+	
+	var returnArray = {
+		"arrayLbl": arrayFindString,
+		"arrayValue": arrayNwString
+	}
+	
+	
+	return returnArray;
+}
+
+function replaceTemplate(template, p){
+	"use strict";
+	console.log("*********** replaceString START ************"+string);
+	var arrayLbl = p.arrayLbl;
+	var arrayValue = p.arrayValue;
+	
+	var string = template;
+	var newString = string;
+  	for (var i = 0; i < arrayLbl.length; i++) {
+		if(arrayValue[i]){
+			newString = newString.split(arrayLbl[i]).join(arrayValue[i]); //Replace all instances of a substring
+
+		}
+  	}
+	console.log("*********** replaceString END ************* newString: "+newString);
+	return newString;
+}
+
 //Type: TYPE_WELLCOME  (email di benvenuto da inviare alla registrazione) 
 //TypeCode: 
 //	10 = nuovo utente
@@ -1452,65 +1513,26 @@ function sendWellcomeMessage(request){
 
 }
 
-function sendEmail(param){
-	Parse.Cloud.run('sendEmail', param ).then(function(resp) {
-		console.log(resp);
-		//return(resp);
-	}, function(error) {
-		console.log(error);
-		return(error);
-	});
+//Type: TYPE_RECOVERY_PASSWORD 
+//Descrizione: Sostituzione password e invio mail con nuova password 
+//TypeCode: 
+//	10 = nuovo utente
+//param:
+//	''
+// 	userEmail
+function recoveryPassword(request){
+	console.log("* recoveryPassword * ");
+	var userEmail = request.params.userEmail;
+	var lang = request.params.lang;
+	var type = request.params.typeSendEmail;
+	var appName = request.params.appName;
+	var emailAdmin = request.params.emailAdmin;
+	
+	console.log("EMAIL: " + userEmail);
+	
+	
 }
 
-function getParamTemplate(param){
-	var arrayFindString = new Array;
-	var arrayNwString = new Array;
-	//TODO: separare header, footer e social nei teplate
-	//
-	
-	if(param.NAME_APP){
-		arrayFindString.push("[NAME_APP]");
-		arrayNwString.push(param.NAME_APP);
-		console.log("NAME_APP: " + param.NAME_APP);
-	}
-	
-	if(param.NAME_USER_CLIENT){
-		arrayFindString.push("[NAME_USER_CLIENT]");
-		arrayNwString.push(param.NAME_USER_CLIENT);
-		console.log("NAME_USER_CLIENT: " + param.NAME_USER_CLIENT);
-	}
-	
-	if(param.ID_REQUEST){
-		arrayFindString.push("[ID_REQUEST]");
-		arrayNwString.push(param.ID_REQUEST);
-		console.log("ID_REQUEST: " + param.ID_REQUEST);
-	}
-	
-	var returnArray = {
-		"arrayLbl": arrayFindString,
-		"arrayValue": arrayNwString
-	}
-	
-	
-	return returnArray;
-}
 
-function replaceTemplate(template, p){
-	"use strict";
-	console.log("*********** replaceString START ************"+string);
-	var arrayLbl = p.arrayLbl;
-	var arrayValue = p.arrayValue;
-	
-	var string = template;
-	var newString = string;
-  	for (var i = 0; i < arrayLbl.length; i++) {
-		if(arrayValue[i]){
-			newString = newString.split(arrayLbl[i]).join(arrayValue[i]); //Replace all instances of a substring
-
-		}
-  	}
-	console.log("*********** replaceString END ************* newString: "+newString);
-	return newString;
-}
 
 
