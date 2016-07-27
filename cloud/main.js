@@ -1506,13 +1506,7 @@ function recoveryPassword(request){
 			console.log("User: " + user.id);
 			console.log(user);
 			user.set("password",newPassword);
-			user.save()
-				.then(
-				  	function(user) {
-				    		return user.fetch();
-				  	}
-				)
-				.then(
+			user.save().then(
 				  	function(user) {
 				    		console.log('Password changed', user);
 				  	},
