@@ -1518,8 +1518,8 @@ function recoveryPassword(request){
 			console.log("User: " + user.id);
 			console.log(user);
 			console.log("user Find success");
-			//user.setPassword(newPassword);
-			user.set("username","Giuseppe");
+			user.setPassword(temporaryPassword);
+			//user.set("password","Giuseppe");
 			user.save(null, { useMasterKey: true }).then( function(user){
 				console.log("NEW Password Recovered");
 				console.log(user);
