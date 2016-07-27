@@ -1493,7 +1493,10 @@ function recoveryPassword(request){
 	var type = request.params.typeSendEmail;
 	var appName = request.params.appName;
 	var emailAdmin = request.params.emailAdmin;
+	var temporaryPassword = Math.random().toString(36).slice(-8);
+
 	console.log("EMAIL: " + userEmail);
+	console.log("PASSWORD TEMPORANEA: " + temporaryPassword);
 	
     	var query = new Parse.Query(Parse.User);
     	query.equalTo("email", userEmail);
@@ -1502,6 +1505,22 @@ function recoveryPassword(request){
 		success: function(user){
 			console.log("User: " + user.id);
 			console.log(user);
+			user.set("password",newPassword);
+			user.save()
+				.then(
+				  	function(user) {
+				    		return user.fetch();
+				  	}
+				)
+				.then(
+				  	function(user) {
+				    		console.log('Password changed', user);
+				  	},
+				  	function(error) {
+				    		console.log('Something chance password);
+				    		console.error(error);
+				  	}
+				);
 			console.log("user Find success");
 			
 		},
