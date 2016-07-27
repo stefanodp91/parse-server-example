@@ -1498,8 +1498,8 @@ function recoveryPassword(request){
 	console.log("EMAIL: " + userEmail);
 	console.log("PASSWORD TEMPORANEA: " + temporaryPassword);
 	
-    	//var query = new Parse.Query(Parse.User);
-    	//query.equalTo("email", userEmail);
+    	
+   /* 	
     	Parse.User.requestPasswordReset(userEmail, {
 	  	success: function() {
 		  	// Password reset request was sent successfully
@@ -1510,23 +1510,24 @@ function recoveryPassword(request){
 	    		console.log("Error: " + error.code + " " + error.message);
 	  	}, useMasterKey: true
 	});
-    /*
+	*/
+    	var query = new Parse.Query("_User");
+    	query.equalTo("email", userEmail);
     	query.first({
 		success: function(user){
 			console.log("User: " + user.id);
 			console.log(user);
-			user.set("password",newPassword);
-			user.save({
-				success: function(user){
-					console.log("SET new passuord: success");
-				},
-				error: function(error){
-					console.log("Error set password");
-					console.log('error');
-					
-				}, useMasterKey: true
+			user.setPassword(newPassword);
+			user.save(null, { useMasterKey: true }).then({ function(user){
+				console.log("NEW Password Recovered");
+				console.log(user);
 				
-			});
+			}, function(error) {
+			  	// error
+			  	console.log("ERROR: save new Password");
+			  	console.log(error);
+			  	
+			});	
 			console.log("user Find success");
 			
 		},
@@ -1537,7 +1538,7 @@ function recoveryPassword(request){
 		},	useMasterKey: true
 	
 	});
-*/
+
 	
 }
 
