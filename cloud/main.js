@@ -1341,7 +1341,7 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 			        
 			case TYPE_RECOVERY_PASSWORD:
 			        console.log("TYPE_RECOVERY_PASSWORD");
-				
+				recoveryPassword(request);
 			        break;
 			        
 			default:
