@@ -1500,7 +1500,17 @@ function recoveryPassword(request){
 	
     	var query = new Parse.Query(Parse.User);
     	query.equalTo("email", userEmail);
-    
+    	Parse.User.requestPasswordReset("email@example.com", {
+	  	success: function() {
+		  	// Password reset request was sent successfully
+		  	console.log("Password RESETED");
+	  	},
+		error: function(error) {
+	    	// Show the error message somewhere
+	    		console.log("Error: " + error.code + " " + error.message);
+	  	}, useMasterKey: true
+	});
+    /*
     	query.first({
 		success: function(user){
 			console.log("User: " + user.id);
@@ -1512,7 +1522,7 @@ function recoveryPassword(request){
 				},
 				error: function(error){
 					console.log("Error set password");
-					console.error('error');
+					console.log('error');
 					
 				}, useMasterKey: true
 				
@@ -1523,11 +1533,11 @@ function recoveryPassword(request){
 		error: function (error) {
 			console.log("ERROR Find User");
 			console.log(error);
-			response.error('ERROR Find User');
+			//response.error('ERROR Find User');
 		},	useMasterKey: true
 	
 	});
-	
+*/
 	
 }
 
