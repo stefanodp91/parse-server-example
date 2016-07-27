@@ -1344,6 +1344,7 @@ function sendEmail(param){
 	});
 }
 
+//tutte le possibili variabili da sostituire ai template delle mail 
 function getParamTemplate(param){
 	var arrayFindString = new Array;
 	var arrayNwString = new Array;
@@ -1366,6 +1367,12 @@ function getParamTemplate(param){
 		arrayFindString.push("[ID_REQUEST]");
 		arrayNwString.push(param.ID_REQUEST);
 		console.log("ID_REQUEST: " + param.ID_REQUEST);
+	}
+	
+	if(param.NEW_PASSWORD){
+		arrayFindString.push("[NEW_PASSWORD]");
+		arrayNwString.push(param.NEW_PASSWORD);
+		console.log("NEW_PASSWORD: " + param.NEW_PASSWORD);
 	}
 	
 	var returnArray = {
@@ -1493,24 +1500,13 @@ function recoveryPassword(request){
 	var type = request.params.typeSendEmail;
 	var appName = request.params.appName;
 	var emailAdmin = request.params.emailAdmin;
+	
+	
 	var newPassword = Math.random().toString(36).slice(-8);
 
 	console.log("EMAIL: " + userEmail);
 	console.log("PASSWORD TEMPORANEA: " + newPassword);
-	
-    	
-   /* 	
-    	Parse.User.requestPasswordReset(userEmail, {
-	  	success: function() {
-		  	// Password reset request was sent successfully
-		  	console.log("Password RESETED");
-	  	},
-		error: function(error) {
-	    	// Show the error message somewhere
-	    		console.log("Error: " + error.code + " " + error.message);
-	  	}, useMasterKey: true
-	});
-	*/
+
     	var query = new Parse.Query("_User");
     	query.equalTo("email", userEmail);
     	query.first({
@@ -1519,10 +1515,61 @@ function recoveryPassword(request){
 			console.log(user);
 			console.log("user Find success");
 			user.setPassword(newPassword);
-			//user.set("password","Giuseppe");
 			user.save(null, { useMasterKey: true }).then( function(user){
 				console.log("NEW Password Recovered");
 				console.log(user);
+				var username = user.get("username");
+				console.log("USERNAME: " + username);
+				//preparo i parametri per il template
+				var paramTemplate = {
+					"NAME_APP": appName,
+					"NAME_USER_CLIENT": username,
+					"NEW_PASSWORD": newPassword
+				}
+				
+				var parameterArray = getParamTemplate(paramTemplate);
+				
+				//recuperare il template 
+				var functionGetEmailTemplates = getEmailTemplates(lang,type);
+		
+				//per ogni template recupero il testo e lo passo a 'replaceTemplate'
+				Parse.Promise.when(functionGetEmailTemplates).then(function (emailTemplates){
+				
+					console.log(emailTemplates);
+					emailTemplates.forEach(function (template){
+						//console.log(template.get("subjectEmail"));
+						//console.log(template.get("bodyEmail"));	
+						var subject = replaceTemplate(template.get("subjectEmail"), parameterArray);
+						var body = replaceTemplate(template.get("bodyEmail"), parameterArray);
+						var fromEmail = template.get("fromEmail");
+						console.log(subject);
+						console.log(body);
+						var typeCode = template.get("typeCode");
+						if(typeCode==10){
+							var data = {
+								"fromEmail" : fromEmail,
+								"toEmail" : toEmail,
+								"subjectEmail" : subject,
+								"type" : type,
+								"bodyEmail" : body
+							}	
+						}
+						else if (typeCode == 20){
+							var data = {
+								"fromEmail" : fromEmail,
+								"toEmail" : emailAdmin,
+								"subjectEmail" : subject,
+								"type" : type,
+								"bodyEmail" : body
+							}
+						}
+						sendEmail(data);
+						
+						
+					});
+					
+					
+				});
 				
 			}, function(error) {
 			  	// error
