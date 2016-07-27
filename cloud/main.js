@@ -1498,8 +1498,8 @@ function recoveryPassword(request){
 	console.log("EMAIL: " + userEmail);
 	console.log("PASSWORD TEMPORANEA: " + temporaryPassword);
 	
-    	var query = new Parse.Query(Parse.User);
-    	query.equalTo("email", userEmail);
+    	//var query = new Parse.Query(Parse.User);
+    	//query.equalTo("email", userEmail);
     	Parse.User.requestPasswordReset(userEmail, {
 	  	success: function() {
 		  	// Password reset request was sent successfully
