@@ -31,6 +31,7 @@ var TYPE_CANCELED_REQUEST = "TYPE_CANCELED_REQUEST";
 var TYPE_NEW_OFFER = "TYPE_NEW_OFFER";
 var TYPE_ACCEPTED_OFFER = "TYPE_ACCEPTED_OFFER";
 var TYPE_WELLCOME = "TYPE_WELLCOME";
+var TYPE_RECOVERY_PASSWORD = "TYPE_RECOVERY_PASSWORD";
 
 var DEFAULT_LANG = 'it-IT';
 var DEFAULT_ADMIN_EMAIL = 'admin@rukku.com';
@@ -1332,12 +1333,28 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 		var type = request.params.typeSendEmail;
 		console.log("PREPARE MESSAGE: " + type);
 		//separare la funzione "sendAllMessage" in più funzioni in base al tipo
+		switch(type) {
+			case TYPE_WELLCOME:
+			        console.log("WELLCOME");
+				sendWellcomeMessage(request);
+			        break;
+			        
+			case TYPE_RECOVERY_PASSWORD:
+			        console.log("TYPE_RECOVERY_PASSWORD");
+				
+			        break;
+			        
+			default:
+        			sendAllMessage(request);
+		}
+		/*
 		if(type == TYPE_WELLCOME){
 			console.log("WELLCOME");
 			sendWellcomeMessage(request);
 		}else{
 			sendAllMessage(request);
 		}
+		*/
 	  	console.log("OK MESSAGE SAND");
 	  	response.success("Respnse: OK MESSAGE SAND");
 	}, 	function(error) {
@@ -1495,3 +1512,5 @@ function replaceTemplate(template, p){
 	console.log("*********** replaceString END ************* newString: "+newString);
 	return newString;
 }
+
+
