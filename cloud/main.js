@@ -1517,7 +1517,7 @@ function recoveryPassword(request){
 				    		console.log('Password changed', user);
 				  	},
 				  	function(error) {
-				    		console.log('Something chance password);
+				    		console.log('Something chance password');
 				    		console.error(error);
 				  	}
 				);
