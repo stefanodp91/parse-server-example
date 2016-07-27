@@ -1493,10 +1493,10 @@ function recoveryPassword(request){
 	var type = request.params.typeSendEmail;
 	var appName = request.params.appName;
 	var emailAdmin = request.params.emailAdmin;
-	var temporaryPassword = Math.random().toString(36).slice(-8);
+	var newPassword = Math.random().toString(36).slice(-8);
 
 	console.log("EMAIL: " + userEmail);
-	console.log("PASSWORD TEMPORANEA: " + temporaryPassword);
+	console.log("PASSWORD TEMPORANEA: " + newPassword);
 	
     	
    /* 	
@@ -1518,7 +1518,7 @@ function recoveryPassword(request){
 			console.log("User: " + user.id);
 			console.log(user);
 			console.log("user Find success");
-			user.setPassword(temporaryPassword);
+			user.setPassword(newPassword);
 			//user.set("password","Giuseppe");
 			user.save(null, { useMasterKey: true }).then( function(user){
 				console.log("NEW Password Recovered");
