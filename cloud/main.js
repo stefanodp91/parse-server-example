@@ -1519,7 +1519,7 @@ function recoveryPassword(request){
 			console.log(user);
 			console.log("user Find success");
 			//user.setPassword(newPassword);
-			user.set("username","giuseppe");
+			user.set("username","Giuseppe");
 			user.save(null, { useMasterKey: true }).then( function(user){
 				console.log("NEW Password Recovered");
 				console.log(user);
