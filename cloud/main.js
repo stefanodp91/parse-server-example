@@ -1659,17 +1659,15 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 					user.set("idProfessional", newProf);
 					user.save(null, {
 						success: function(p){
-							console.log("success Save Update User:");
+							console.log("success Update User:");
 							console.log(p);
+							response.success('user Updated');
 							
-							
-							
-					
 						},
 						error: function(user, error){
 							console.error("Errore  Users.getUser: ");
 							console.error(error);
-						
+							response.error(error);
 						
 						}, useMasterKey: true
 					});
@@ -1677,14 +1675,14 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 				error: function(error){
 					console.error("Errore  Users.addProfessional to getProfessional");
 					console.error(error);
-					callback(false, error);
+					response.error(error);
 				}
 			});
 		},
 		error: function(error){
 			console.error("Errore  Professional.newProfessional to getUser ");
 			console.error(error);
-			callback(false, error);
+			response.error(error);
 
 		
 		}
