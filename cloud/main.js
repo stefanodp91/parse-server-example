@@ -1671,7 +1671,7 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 							console.error(error);
 						
 						
-						}
+						}, useMasterKey: true
 					});
 				},
 				error: function(error){
