@@ -1629,4 +1629,66 @@ Parse.Cloud.define("deleteUserWithId", function(request, response) {
 	});
 });
 
+/*
+- Aggiunge il campo idProfessional all'utente 
+Parameters: 
+	userId (id dell'utente)
+	prfId (id del profilo professionista)
+*/	
+Parse.Cloud.define("addProfessionalToUser", function(request, response) {
+    	console.log("* Users.addProfessional * ");
+	var that = this; 
+	
+	var userId = request.params.userId;
+	var profId = request.params.professionalId;
+	
+	var User = Parse.Object.extend("_User");
+	var query = new Parse.Query(User);
+	query.equalTo("objectId", userId);
+	query.first({
+		success: function(user){
+			console.log("success get USER:");
+			console.log(user);
+			var Professional = Parse.Object.extend("Professional");
+			var query = new Parse.Query(Professional);
+			query.equalTo("objectId", profId);
+			query.first({
+				success: function(newProf){
+					console.log("succes get PROFESSIONAL:");
+					console.log(newProf);
+					user.set("idProfessional", newProf);
+					user.save(null, {
+						success: function(p){
+							console.log("success Save Update User:");
+							console.log(p);
+							
+							
+							
+					
+						},
+						error: function(user, error){
+							console.error("Errore  Users.getUser: ");
+							console.error(error);
+						
+						
+						}
+					});
+				},
+				error: function(error){
+					console.error("Errore  Users.addProfessional to getProfessional");
+					console.error(error);
+					callback(false, error);
+				}
+			});
+		},
+		error: function(error){
+			console.error("Errore  Professional.newProfessional to getUser ");
+			console.error(error);
+			callback(false, error);
+
+		
+		}
+	});
+		
+});
 
