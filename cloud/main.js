@@ -1408,6 +1408,7 @@ function replaceTemplate(template, p){
 //	20 = amministratore
 function sendWellcomeMessage(request){
 	console.log("* sendWellcomeMessage * ");
+	console.log(request);
 	var idUser = request.params.idUser;
 	var lang = request.params.lang;
 	var type = request.params.typeSendEmail;
