@@ -1599,6 +1599,8 @@ Parameters:
 */	
 Parse.Cloud.define("deleteUserWithId", function(request, response) {
     //Parse.Cloud.useMasterKey();
+    console.log("DELETE USER");
+    console.log(request);
     var userId = request.params.userId;
     var query = new Parse.Query(Parse.User);
     query.equalTo("objectId", userId);
