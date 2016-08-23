@@ -138,7 +138,7 @@ function getLEmailLastBestOffer(idListForms){
 
 function replaceString(string){
 	"use strict";
-	console.log("*********** replaceString START ************"+string);
+	console.log("*********** replaceString START ************");
 	//[NAME_APP]
 	//[ID_REQUEST]
 	//[CREATEDAT_REQUEST]
@@ -156,7 +156,7 @@ function replaceString(string){
 			//console.log("\n newString: "+newString+"  arrayFind:"+arrayFindString[i] + " arrayNwString: "+arrayNwString[i]);
 		}
   	}
-	console.log("*********** replaceString END ************* newString: "+newString);
+	console.log("*********** replaceString END ************* ");
 	return newString;
 }
 
@@ -1386,7 +1386,7 @@ function getParamTemplate(param){
 
 function replaceTemplate(template, p){
 	"use strict";
-	console.log("*********** replaceString START ************"+string);
+	console.log("*********** replaceString START ************");
 	var arrayLbl = p.arrayLbl;
 	var arrayValue = p.arrayValue;
 	
@@ -1398,7 +1398,7 @@ function replaceTemplate(template, p){
 
 		}
   	}
-	console.log("*********** replaceString END ************* newString: "+newString);
+	console.log("*********** replaceString END ************* newString: ");
 	return newString;
 }
 
