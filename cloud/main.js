@@ -124,7 +124,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
 	query.include('idUserResponder.idProfessional'); 
-	query.include('idUserResponder.idProfessional.email'); 
+	//query.include('idUserResponder.idProfessional.email'); 
 	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
@@ -883,14 +883,15 @@ function sendAllMessage(request){
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUser");
+							var professional = arrayAllEmailTo[ii];
 							console.log(user);
-							console.log(user.get('idProfessional'));
-							console.log(user.get("idProfessional").get("email"));
+							console.log(professional);
+							console.log(professional.get("email"));
 							//console.log("SendTo: "+user.get("email"));
 							//console.log("\n ------ user : "+arrayAllEmailTo[ii]+ " ---- user :"+arrayAllEmailTo[ii].get("idUser"));
 							if(arrayToEmail.indexOf(user.get("username")) === -1){
 								arrayToEmail.push(user.get("username"));
-								toEmail = user.get("idProfessional").get("email");
+								toEmail = professional.get("email");
 								idTo = user.id;
 								//console.log("\n ------prepare for send email : "+toEmail); 
 								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
