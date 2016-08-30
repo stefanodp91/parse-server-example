@@ -882,7 +882,9 @@ function sendAllMessage(request){
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUser");
-							
+							console.log(user);
+							console.log(user.get('idProfessional'));
+							console.log(user.get("idProfessional").get("email"));
 							//console.log("SendTo: "+user.get("email"));
 							//console.log("\n ------ user : "+arrayAllEmailTo[ii]+ " ---- user :"+arrayAllEmailTo[ii].get("idUser"));
 							if(arrayToEmail.indexOf(user.get("username")) === -1){
