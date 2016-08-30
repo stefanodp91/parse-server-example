@@ -123,6 +123,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	var query = new Parse.Query("ListOffers");
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
+	query.include('idUserResponder.idProfessional'); 
 	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
@@ -876,16 +877,17 @@ function sendAllMessage(request){
 						// - invio email di nuova richiesta a tutti i professionisti e all'amministratore
 						//console.log("\n ------arrayAllEmailProfessional : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
-						arrayToEmail.push(userSenderClient.get("email"));
+						//"arrayToEmail" contiene gli username degli utenti a cui è già stata inviata la mail
+						arrayToEmail.push(userSenderClient.get("username"));
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUser");
 							
 							//console.log("SendTo: "+user.get("email"));
 							//console.log("\n ------ user : "+arrayAllEmailTo[ii]+ " ---- user :"+arrayAllEmailTo[ii].get("idUser"));
-							if(arrayToEmail.indexOf(user.get("email")) === -1){
-								arrayToEmail.push(user.get("email"));
-								toEmail = user.get("email");
+							if(arrayToEmail.indexOf(user.get("username")) === -1){
+								arrayToEmail.push(user.get("username"));
+								toEmail = user.get("idProfessional").get("email");
 								idTo = user.id;
 								//console.log("\n ------prepare for send email : "+toEmail); 
 								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
@@ -916,13 +918,15 @@ function sendAllMessage(request){
 						// - invio email di conferma eliminazione a tutti i professionisti partecipanti all'asta e all'amministratore
 						//console.log("\n ------arrayEmailProfessionalSentOffer : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
+						//"arrayToEmail" contiene gli username degli utenti a cui è già stata inviata la mail
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUserResponder");
-							if(arrayToEmail.indexOf(user.get("email")) === -1){
-								arrayToEmail.push(user.get("email"));
+							if(arrayToEmail.indexOf(user.get("username")) === -1){
+								arrayToEmail.push(user.get("username"));
 								idTo = user.id;
-								toEmail = user.get("email");
+								//toEmail = user.get("email");
+								toEmail = user.get("idProfessional").get('email');
 								//console.log("\n ------prepare for send idTo : "+idTo); 
 								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
 								promises.push(functionSendEmailtoProf);
@@ -957,7 +961,8 @@ function sendAllMessage(request){
 					}
 					else if(typeCode === 20){
 						// - invio email di conferma nuova offerta al professionista e all'amministratore
-						toEmail = userSenderProfessional.get("email");
+						//toEmail = userSenderProfessional.get("email");
+						toEmail = userSenderProfessional.get("idProfessional").get("email");
 						//console.log("\n ------ 20 : "+toEmail);
 						functionSendEmailtoClient = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
 						functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
@@ -969,6 +974,7 @@ function sendAllMessage(request){
 						//console.log("\n ------ 30 : "+arrayAllEmailTo.length);
 						
 						var arrayToEmail = new Array;
+						//"arrayToEmail" contiene gli username degli utenti a cui è già stata inviata la mail
 						//arrayAllEmailTo: contiene la lista delle offerte (per la richiesta) in ordine di prezzo
 						console.log("arrayAllEmailTo: " + arrayAllEmailTo.length);
 						console.log("best Price: " + arrayAllEmailTo[0].get("price"));
@@ -979,18 +985,18 @@ function sendAllMessage(request){
 						console.log("LISTA OFFERENTI:");
 						//se l'offerta eseguita è la migliore notifica a tutti "offerta superata"
 						if(arrayAllEmailTo[0].id == objectOffer.id){
-							arrayToEmail.push(userSenderClient.get("email"));
-							arrayToEmail.push(userSenderProfessional.get("email"));
+							arrayToEmail.push(userSenderClient.get("username"));
+							arrayToEmail.push(userSenderProfessional.get("username"));
 							
 							for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 							{
 								user = arrayAllEmailTo[ii].get("idUserResponder");
-								console.log(user.get("email") +":  " +arrayAllEmailTo[ii].get("price"));
+								console.log(user.get("username") +":  " +arrayAllEmailTo[ii].get("price"));
 								//arrayToEmail contiene le mail già inviate
-								if(arrayToEmail.indexOf(user.get("email")) === -1){
-									arrayToEmail.push(user.get("email"));
+								if(arrayToEmail.indexOf(user.get("username")) === -1){
+									arrayToEmail.push(user.get("username"));
 									idTo = user.id;
-									toEmail = user.get("email");
+									toEmail = user.get("idProfessional").get('email');
 									//console.log("\n ------prepare for send email : "+toEmail); 
 									functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
 									promises.push(functionSendEmailtoProf);
@@ -1040,7 +1046,8 @@ function sendAllMessage(request){
 					}
 					else if(typeCode === 20){
 						// - invio email di conferma offerta accettata al professionista e all'amministratore
-						toEmail = userSenderProfessional.get("email");
+						//toEmail = userSenderProfessional.get("email");
+						toEmail = userSenderProfessional.get("idProfessional").get("email");
 						idTo = userSenderProfessional.id;
 						
 						//console.log("\n ------ 20 : "+toEmail);
@@ -1057,13 +1064,16 @@ function sendAllMessage(request){
 						// - invio email di avviso chiusura richiesta ai professionista partecipanti all'asta e all'amministratore
 						//console.log("\n ------ 30 : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
+						arrayToEmail.push(userSenderProfessional.get("username"));
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
 							user = arrayAllEmailTo[ii].get("idUserResponder");
-							if(arrayToEmail.indexOf(user.get("email")) === -1 && user.get("email") !== userSenderProfessional.get("email")){
-								arrayToEmail.push(user.get("email"));
+							
+							if(arrayToEmail.indexOf(user.get("username")) === -1){
+								arrayToEmail.push(user.get("username"));
 								idTo = user.id;
-								toEmail = user.get("email");
+								//toEmail = user.get("email");
+								toEmail = user.get("idProfessional").get('email');
 								//console.log("\n ------prepare for send email : "+toEmail); 
 								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
 								promises.push(functionSendEmailtoProf);
