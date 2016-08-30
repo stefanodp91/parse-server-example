@@ -124,6 +124,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
 	query.include('idUserResponder.idProfessional'); 
+	query.include('idUserResponder.idProfessional.email'); 
 	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
