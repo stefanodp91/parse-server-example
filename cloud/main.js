@@ -171,7 +171,7 @@ function checkNotification(idListForms, emailTo, result){
 
 	var query = new Parse.Query("ListForms");
 	query.equalTo("objectId", idListForms);
-	query.include('idUserResponder');
+	query.include('idUserResponder.idProfessional');
 	query.include('idUserRequest');
 	query.first().then(function(request){
 		var idOfferAccepted = request.get("idOfferAccepted").id;
@@ -185,7 +185,8 @@ function checkNotification(idListForms, emailTo, result){
 		var userRequestEmail = userRequest.get("email");
 		console.log("userRequestEmail: " + userRequestEmail);
 		var userResponder = request.get("idUserResponder");
-		var userResponderEmail = userResponder.get("email");
+		//var userResponderEmail = userResponder.get("email");
+		var userResponderEmail = userResponder.get("idProfessional").get('email');
 		console.log("userResponderEmail: " + userResponderEmail);
 
 		
