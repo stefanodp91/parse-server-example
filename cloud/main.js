@@ -124,7 +124,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
 	query.include('idUserResponder.idProfessional'); 
-	query.include('idUserResponder.idProfessional.email'); 
+	//query.include('idUserResponder.idProfessional.email'); 
 	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
@@ -1146,7 +1146,8 @@ function sendAllMessage(request){
 			
 	}, 
 	function(error) {
-		console.log("error on promise: "+ error );
+		console.error("error on promise: ");
+		console.error(error);
 		response.error(error);
 	}
 	);
