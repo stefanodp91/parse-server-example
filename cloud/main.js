@@ -966,6 +966,9 @@ function sendAllMessage(request){
 					else if(typeCode === 20){
 						// - invio email di conferma nuova offerta al professionista e all'amministratore
 						//toEmail = userSenderProfessional.get("email");
+						console.log(userSenderProfessional);
+						console.log(userSenderProfessional.get("idProfessional"));
+						
 						toEmail = userSenderProfessional.get("idProfessional").get("email");
 						//console.log("\n ------ 20 : "+toEmail);
 						functionSendEmailtoClient = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
