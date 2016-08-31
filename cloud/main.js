@@ -967,8 +967,10 @@ function sendAllMessage(request){
 						// - invio email di conferma nuova offerta al professionista e all'amministratore
 						//toEmail = userSenderProfessional.get("email");
 						console.log(userSenderProfessional);
+						console.log(JSON.stringify(userSenderProfessional));
 						console.log(userSenderProfessional.get("idProfessional"));
 						console.log(JSON.stringify(userSenderProfessional.get("idProfessional")))
+						console.log(userSenderProfessional.get("idProfessional").attributes.email);
 						
 						toEmail = userSenderProfessional.get("idProfessional").get("email");
 						//console.log("\n ------ 20 : "+toEmail);
