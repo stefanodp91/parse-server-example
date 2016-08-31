@@ -124,7 +124,7 @@ function getListEmailProfessionalSentOffer(idListForms){
 	query.equalTo("idListForms", form);
 	query.include('idUserResponder');
 	query.include('idUserResponder.idProfessional'); 
-	//query.include('idUserResponder.idProfessional.email'); 
+	query.include('idUserResponder.idProfessional.email'); 
 	query.ascending("price"); //il primo della lista è il miglior Offerente
 	return query.find();
 }
@@ -968,6 +968,7 @@ function sendAllMessage(request){
 						//toEmail = userSenderProfessional.get("email");
 						console.log(userSenderProfessional);
 						console.log(userSenderProfessional.get("idProfessional"));
+						console.log(JSON.stringify(userSenderProfessional.get("idProfessional")))
 						
 						toEmail = userSenderProfessional.get("idProfessional").get("email");
 						//console.log("\n ------ 20 : "+toEmail);
