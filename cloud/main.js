@@ -91,6 +91,7 @@ function getOfferDetail(idListOffers){
 		var query = new Parse.Query("ListOffers");
 		query.equalTo("objectId", idListOffers);
 		query.include('idUserResponder');
+		query.include('idUserResponder.idProfessional');
 		var myres = query.first();
 //		console.log("getOfferDetail: " + myres);
 		return myres;
