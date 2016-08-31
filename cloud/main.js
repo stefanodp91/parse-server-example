@@ -1716,3 +1716,10 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 		
 });
 
+Parse.Cloud.define("updateUser", function(request, response) {
+    	console.log("* Users.updateUser * ");
+    	console.log(request);
+
+		
+});
+
