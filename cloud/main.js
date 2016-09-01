@@ -1817,12 +1817,12 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			if(false/*request.params.image*/){
 				console.log("imageURL: " + request.params.image.url);
 				
-				var callback = function(result, response){
+				var callback = function(result, resp){
 					if(result){
 						console.log("saveProfileImage SUCCESS");
-						user.set("image" , response);
+						user.set("image" , resp);
 						
-						var callbackUser = function(result, response){
+						var callbackUser = function(result, res){
 							if(result){
 								response.success(true);
 							}else{
@@ -1839,7 +1839,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
 				retriveFile(request.params.image.url, callback);
 				
 			}else{
-				var callbackUser = function(result, response){
+				var callbackUser = function(result, resp){
 					if(result){
 						console.log("saveUser SUCCESS");
 						response.success(true);
