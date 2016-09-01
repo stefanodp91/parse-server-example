@@ -1719,8 +1719,34 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 Parse.Cloud.define("updateUser", function(request, response) {
     	console.log("* Users.updateUser * ");
     	console.log(request);
-    	response.success('user Updated');
+    	
+    	var User = Parse.Object.extend("_User");
+	var query = new Parse.Query(User);
+	query.equalTo("objectId", request.objectId);
+	query.first({
+		success: function(user){
 
+			user.set("email" , request.email);
+			
+			if(request.fullName){
+				user.set("fullName" , request.fullName);
+			}
+			if(request.image){
+				user.set("image" , request.fullName);
+			
+			}
+			console.log(user);
+			
+		},
+		error: function(error){
+			console.error("Errore  updateUser - get user ");
+			console.error(error);
+		
+		}
+	});
+    	
+    	response.success('user Updated');
+	
 		
 });
 
