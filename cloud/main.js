@@ -1786,7 +1786,7 @@ function saveUser(user, callback){
 //Per L'amministratore: consente di aggiornare i dati del profilo di un'altro utente
 Parse.Cloud.define("updateUser", function(request, response) {
     	console.log("* Users.updateUser * ");
-    	console.log((request);
+    	console.log(request);
     	
     	console.log("objectId: " + request.params.objectId);
     	
