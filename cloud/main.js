@@ -1756,13 +1756,12 @@ function retriveFile(url, callback){
 	  console.log("retriveFile SUCCESS");
 	  console.log(response);
 	  console.log("status: " +  response.status);
-	  console.log("status2 :" + response.HTTPResponse.status);
-	  console.log("type:");
-	  console.log(response.headers.content-type);
+	  console.log("headers:");
+	  //console.log(response.headers);
 	  console.log(response.buffer.data);
 	  //console.log(JSON.stringify(response));
 	  var name = "imageProfile.png";
-	  var file = new Parse.File(name, response.buffer.data, response.headers.content-type);
+	  var file = new Parse.File(name, response.buffer.data, 'image/png');
 
 	  callback(true, file);
 	}, function(error) {
