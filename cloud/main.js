@@ -1724,6 +1724,7 @@ function saveProfileImage(url, callback){
 	xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 	xhr.onload = function() 
 	{
+		console.log("Start xhr.onload");
 	    	var blob = xhr.response;//xhr.response is now a blob object
 	    	console.log(blob);
 	    	var tempFile = new File([blob], "temp_file_image");
@@ -1732,6 +1733,7 @@ function saveProfileImage(url, callback){
 	    	var name = "imageProfile.png";
 		var parseFile = new Parse.File(name, tempFile); 
 		parseFile.save().then(function(res) {
+			
 			console.log("savedFile: ");
 			console.log(res);
 			callback(true, res);
