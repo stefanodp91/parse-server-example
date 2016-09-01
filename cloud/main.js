@@ -1813,7 +1813,8 @@ Parse.Cloud.define("updateUser", function(request, response) {
 				console.log("fullName: " + request.params.fullName);
 				user.set("fullName" , request.params.fullName);
 			}
-			if(request.params.image){
+			//TODO finire si completare il salvataggio dell'immagine
+			if(false/*request.params.image*/){
 				console.log("imageURL: " + request.params.image.url);
 				
 				var callback = function(result, response){
