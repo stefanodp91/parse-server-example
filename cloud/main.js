@@ -1720,7 +1720,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
     	console.log("* Users.updateUser * ");
     	console.log(request);
     	
-    	console.log("objectId: " + request.objectId);
+    	console.log("objectId: " + request.params.objectId);
     	
     	var User = Parse.Object.extend("_User");
 	var query = new Parse.Query(User);
