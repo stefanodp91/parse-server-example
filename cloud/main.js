@@ -1749,6 +1749,23 @@ function saveProfileImage(url, callback){
     	
 }
 
+function retriveFile(url, callback){
+	console.log("Start retriveFile");
+	Parse.Cloud.httpRequest({ url: url }).then(function(response) {
+	  // The file contents are in response.buffer.
+	  console.log("retriveFile SUCCESS");
+	  console.log(response);
+	  console.log(JSON.stringify(response));
+	  
+	  callback(true, response);
+	}, function(error) {
+	  	console.error(error);
+	  	callback(false, error);
+			  	
+	});
+
+}
+
 function saveUser(user, callback){
 	console.log("Start saveUser");
 	user.save(null, {
@@ -1769,7 +1786,7 @@ function saveUser(user, callback){
 //Per L'amministratore: consente di aggiornare i dati del profilo di un'altro utente
 Parse.Cloud.define("updateUser", function(request, response) {
     	console.log("* Users.updateUser * ");
-    	console.log(request);
+    	console.log((request);
     	
     	console.log("objectId: " + request.params.objectId);
     	
@@ -1812,7 +1829,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
 						response.error(error);
 					}
 				}
-				saveProfileImage(request.params.image.url, callback);
+				retriveFile(request.params.image.url, callback);
 				
 			}else{
 				var callbackUser = function(result, response){
