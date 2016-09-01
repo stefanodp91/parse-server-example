@@ -1717,9 +1717,9 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 });
 
 function saveProfileImage(url, callback){
-	
+	console.log("Start saveProfileImage");
 	var xhr = new XMLHttpRequest(); 
-	xhr.open("GET", request.params.image.url); 
+	xhr.open("GET", url); 
 	console.log(xhr);
 	xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 	xhr.onload = function() 
@@ -1748,6 +1748,7 @@ function saveProfileImage(url, callback){
 }
 
 function saveUser(user, callback){
+	console.log("Start saveUser");
 	user.save(null, {
 		success: function(p){
 			console.log("success Update User:");
@@ -1779,10 +1780,12 @@ Parse.Cloud.define("updateUser", function(request, response) {
 		success: function(user){
 			console.log("query success");
 			if(request.params.email){
+				console.log("email: " + request.params.email);
 				user.set("email" , request.params.email);
 			}
 			
 			if(request.params.fullName){
+				console.log("fullName: " + request.params.fullName);
 				user.set("fullName" , request.params.fullName);
 			}
 			if(request.params.image){
@@ -1790,6 +1793,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
 				
 				var callback = function(result, response){
 					if(result){
+						console.log("saveProfileImage SUCCESS");
 						user.set("image" , response);
 						
 						var callbackUser = function(result, response){
@@ -1803,6 +1807,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
 					}else{
 						console.error("ERROR: saveProfileImage:");
 						console.error(error);
+						response.error(error);
 					}
 				}
 				saveProfileImage(request.params.image.url, callback);
@@ -1810,6 +1815,7 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			}else{
 				var callbackUser = function(result, response){
 					if(result){
+						console.log("saveUser SUCCESS");
 						response.success(true);
 					}else{
 						response.error(error);
@@ -1824,11 +1830,12 @@ Parse.Cloud.define("updateUser", function(request, response) {
 		error: function(error){
 			console.error("Errore  updateUser - get user ");
 			console.error(error);
+			response.error(error);
 		
 		}
 	});
     	
-    	response.success('user Updated');
+    	
 	
 		
 });
