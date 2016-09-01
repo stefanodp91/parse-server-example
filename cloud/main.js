@@ -1755,8 +1755,8 @@ function retriveFile(url, callback){
 	  // The file contents are in response.buffer.
 	  console.log("retriveFile SUCCESS");
 	  console.log(response);
-	  console.log("status: response.status");
-	  console.log("status: response.HTTPResponse.status");
+	  console.log("status: " +  response.status);
+	  console.log("status2 :" + response.HTTPResponse.status);
 	  console.log("type:");
 	  console.log(response.headers.content-type);
 	  console.log(response.buffer.data);
