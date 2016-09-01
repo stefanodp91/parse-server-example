@@ -1759,7 +1759,7 @@ function retriveFile(url, callback){
 	  console.log(response.buffer.data);
 	  //console.log(JSON.stringify(response));
 	  var name = "imageProfile.png";
-	  var file = var file = new Parse.File(name, response.buffer.data, response.headers.content-type);
+	  var file = new Parse.File(name, response.buffer.data, response.headers.content-type);
 
 	  callback(true, file);
 	}, function(error) {
