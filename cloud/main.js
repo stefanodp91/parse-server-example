@@ -1738,6 +1738,20 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			
 			}
 			console.log(user);
+			user.save(null, {
+				success: function(p){
+					console.log("success Update User:");
+					console.log(p);
+					response.success(true);
+					
+				},
+				error: function(user, error){
+					console.error("Errore  Users.getUser: ");
+					console.error(error);
+					response.error(error);
+				
+				}, useMasterKey: true
+			});
 			
 		},
 		error: function(error){
