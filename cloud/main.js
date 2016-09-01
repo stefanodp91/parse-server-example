@@ -1716,42 +1716,109 @@ Parse.Cloud.define("addProfessionalToUser", function(request, response) {
 		
 });
 
+function saveProfileImage(url, callback){
+	
+	var xhr = new XMLHttpRequest(); 
+	xhr.open("GET", request.params.image.url); 
+	console.log(xhr);
+	xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+	xhr.onload = function() 
+	{
+	    	var blob = xhr.response;//xhr.response is now a blob object
+	    	console.log(blob);
+	    	var tempFile = new File([blob], "temp_file_image");
+	    	console.log("File:");
+	    	console.log(image);
+	    	var name = "imageProfile.png";
+		var parseFile = new Parse.File(name, tempFile); 
+		parseFile.save().then(function(res) {
+			console.log("savedFile: ");
+			console.log(res);
+			callback(true, res);
+		
+		}, function(error) {
+		  	console.error(error);
+		  	callback(false, error);
+			  	
+		});
+	}
+	xhr.send();
+		
+    	
+}
+
+function saveUser(user, callback){
+	user.save(null, {
+		success: function(p){
+			console.log("success Update User:");
+			console.log(p);
+			callback(true, p);
+			
+		},
+		error: function(user, error){
+			console.error("Errore  Users.getUser: ");
+			console.error(error);
+			callback(false, error);
+		
+		}, useMasterKey: true
+	});
+}
+//Per L'amministratore: consente di aggiornare i dati del profilo di un'altro utente
 Parse.Cloud.define("updateUser", function(request, response) {
     	console.log("* Users.updateUser * ");
     	console.log(request);
     	
     	console.log("objectId: " + request.params.objectId);
     	
+    
+    	//recupero l'immagine dall'url
     	var User = Parse.Object.extend("_User");
 	var query = new Parse.Query(User);
 	query.equalTo("objectId", request.params.objectId);
 	query.first({
 		success: function(user){
 			console.log("query success");
-			user.set("email" , request.params.email);
+			if(request.params.email){
+				user.set("email" , request.params.email);
+			}
 			
 			if(request.params.fullName){
 				user.set("fullName" , request.params.fullName);
 			}
 			if(request.params.image){
-				user.set("image" , request.params.fullName);
-			
+				console.log("imageURL: " + request.params.image.url);
+				
+				var callback = function(result, response){
+					if(result){
+						user.set("image" , response);
+						
+						var callbackUser = function(result, response){
+							if(result){
+								response.success(true);
+							}else{
+								response.error(error);
+							}
+						}
+						saveUser(user, callbackUser);
+					}else{
+						console.error("ERROR: saveProfileImage:");
+						console.error(error);
+					}
+				}
+				saveProfileImage(request.params.image.url, callback);
+				
+			}else{
+				var callbackUser = function(result, response){
+					if(result){
+						response.success(true);
+					}else{
+						response.error(error);
+					}
+				}
+				saveUser(user, callbackUser);
 			}
 			console.log(user);
-			user.save(null, {
-				success: function(p){
-					console.log("success Update User:");
-					console.log(p);
-					response.success(true);
-					
-				},
-				error: function(user, error){
-					console.error("Errore  Users.getUser: ");
-					console.error(error);
-					response.error(error);
-				
-				}, useMasterKey: true
-			});
+			
 			
 		},
 		error: function(error){
