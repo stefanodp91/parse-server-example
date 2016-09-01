@@ -1755,9 +1755,13 @@ function retriveFile(url, callback){
 	  // The file contents are in response.buffer.
 	  console.log("retriveFile SUCCESS");
 	  console.log(response);
-	  console.log(JSON.stringify(response));
-	  
-	  callback(true, response);
+	  console.log(response.headers.content-type);
+	  console.log(response.buffer.data);
+	  //console.log(JSON.stringify(response));
+	  var name = "imageProfile.png";
+	  var file = var file = new Parse.File(name, response.buffer.data, response.headers.content-type);
+
+	  callback(true, file);
 	}, function(error) {
 	  	console.error(error);
 	  	callback(false, error);
