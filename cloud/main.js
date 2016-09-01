@@ -1724,17 +1724,17 @@ Parse.Cloud.define("updateUser", function(request, response) {
     	
     	var User = Parse.Object.extend("_User");
 	var query = new Parse.Query(User);
-	query.equalTo("objectId", request.objectId);
+	query.equalTo("objectId", request.params.objectId);
 	query.first({
 		success: function(user){
 			console.log("query success");
-			user.set("email" , request.email);
+			user.set("email" , request.params.email);
 			
 			if(request.fullName){
-				user.set("fullName" , request.fullName);
+				user.set("fullName" , request.params.fullName);
 			}
 			if(request.image){
-				user.set("image" , request.fullName);
+				user.set("image" , request.params.fullName);
 			
 			}
 			console.log(user);
