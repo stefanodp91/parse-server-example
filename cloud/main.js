@@ -1730,10 +1730,10 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			console.log("query success");
 			user.set("email" , request.params.email);
 			
-			if(request.fullName){
+			if(request.params.fullName){
 				user.set("fullName" , request.params.fullName);
 			}
-			if(request.image){
+			if(request.params.image){
 				user.set("image" , request.params.fullName);
 			
 			}
