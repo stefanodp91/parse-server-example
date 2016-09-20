@@ -31,8 +31,8 @@ var api = new ParseServer({
         //pfx: __dirname + '/cloud/RukkuCertificatoSviluppo.p12',
         passphrase: '', // optional password to your p12/PFX
         bundleId: 'it.frontiere21.Rukku',
-        //production: true
-        production: false
+        production: true
+        //production: false
       }
     }
     
