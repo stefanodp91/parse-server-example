@@ -26,7 +26,8 @@ var api = new ParseServer({
       apiKey: 'AIzaSyCKhEdHxjyBo_ei4ipmHM7VrrnRNjERAzQ' // The Server API Key of GCM
     },
       ios: {
-        pfx: __dirname + '/cloud/a.p12',
+        //pfx: __dirname + '/cloud/a.p12',
+        pfx: __dirname + '/cloud/c.p12',
         passphrase: '', // optional password to your p12/PFX
         bundleId: 'it.frontiere21.Rukku',
         production: true
