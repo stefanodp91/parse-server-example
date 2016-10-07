@@ -1859,10 +1859,108 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			response.error(error);
 		
 		}
-	});
-    	
-    	
+	});	
+});
+
+/*
+Parameters: 
+	professionalId (id del professionista da eliminare)
+*/	
+Parse.Cloud.define("deleteProfessionalWithId", function(request, response) {
+    //Parse.Cloud.useMasterKey();
+    console.log("DELETE PROFESSIONAL");
+    console.log(request);
+    var professionalId = request.params.professionalId;
+
+
+	var Professional = Parse.Object.extend("Professional");
+	var query = new Parse.Query(Professional);
+    query.equalTo("objectId", professionalId);
+    
+    query.first({
+		success: function(professional){
+			console.log("Delete professional: " + professional.id);
+
+			professional.destroy({
+				success: function(){
+					console.log("professional DESTROIED");
+					response.success('professional DESTROIED');
+				},
+				error: function(){
+					console.log("ERROR professional DESTROIED");
+					response.error('ERROR professional DESTROIED');
+					
+				}, useMasterKey: true
+				
+			});
+			console.log("professional found with success");
+			
+		},
+		error: function (error) {
+			console.log("ERROR professional not found");
+			console.log(error);
+			response.error('ERROR professional not found');
+		},	useMasterKey: true
 	
-		
+	});
+});
+
+/*
+- Valorizza a null il campo idProfessional dell'utente 
+Parameters: 
+	userId (id dell'utente)
+	prfId (id del profilo professionista)
+*/	
+Parse.Cloud.define("detachProfessionalFromUser", function(request, response) {
+    	console.log("* Users.detachProfessionalFromUser * ");
+	var that = this; 
+	
+	var userId = request.params.userId;
+	var profId = request.params.professionalId;
+	
+	var User = Parse.Object.extend("_User");
+	var query = new Parse.Query(User);
+	query.equalTo("objectId", userId);
+	query.first({
+		success: function(user){
+			console.log("success get USER:");
+			console.log(user);
+			var Professional = Parse.Object.extend("Professional");
+			var query = new Parse.Query(Professional);
+			query.equalTo("objectId", profId);
+			query.first({
+				success: function(newProf){
+					console.log("succes get PROFESSIONAL:");
+					console.log(newProf);
+					user.set("idProfessional", null);
+					user.save(null, {
+						success: function(p){
+							console.log("success Update User:");
+							console.log(p);
+
+							response.success('user Updated');
+							
+						},
+						error: function(user, error){
+							console.error("Errore  Users.getUser: ");
+							console.error(error);
+							response.error(error);
+						
+						}, useMasterKey: true
+					});
+				},
+				error: function(error){
+					console.error("Errore  Users.addProfessional to getProfessional");
+					console.error(error);
+					response.error(error);
+				}
+			});
+		},
+		error: function(error){
+			console.error("Errore  Professional.newProfessional to getUser ");
+			console.error(error);
+			response.error(error);
+		}
+	});	
 });
 
