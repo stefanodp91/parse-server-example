@@ -1871,8 +1871,7 @@ Parse.Cloud.define("deleteProfessionalWithId", function(request, response) {
     console.log("DELETE PROFESSIONAL");
     console.log(request);
     var professionalId = request.params.professionalId;
-
-
+	
 	var Professional = Parse.Object.extend("Professional");
 	var query = new Parse.Query(Professional);
     query.equalTo("objectId", professionalId);
@@ -1883,12 +1882,12 @@ Parse.Cloud.define("deleteProfessionalWithId", function(request, response) {
 
 			professional.destroy({
 				success: function(){
-					console.log("professional DESTROIED");
-					response.success('professional DESTROIED');
+					console.log("professional destroyed");
+					response.success('SUCCESS');
 				},
 				error: function(){
-					console.log("ERROR professional DESTROIED");
-					response.error('ERROR professional DESTROIED');
+					console.log("ERROR professional destroyed");
+					response.error('ERROR');
 					
 				}, useMasterKey: true
 				
@@ -1899,7 +1898,7 @@ Parse.Cloud.define("deleteProfessionalWithId", function(request, response) {
 		error: function (error) {
 			console.log("ERROR professional not found");
 			console.log(error);
-			response.error('ERROR professional not found');
+			response.error('ERROR');
 		},	useMasterKey: true
 	
 	});
@@ -1938,13 +1937,13 @@ Parse.Cloud.define("detachProfessionalFromUser", function(request, response) {
 							console.log("success Update User:");
 							console.log(p);
 
-							response.success('user Updated');
+							response.success('SUCCESS');
 							
 						},
 						error: function(user, error){
 							console.error("Errore  Users.getUser: ");
 							console.error(error);
-							response.error(error);
+							response.error('ERROR');
 						
 						}, useMasterKey: true
 					});
@@ -1952,14 +1951,14 @@ Parse.Cloud.define("detachProfessionalFromUser", function(request, response) {
 				error: function(error){
 					console.error("Errore  Users.addProfessional to getProfessional");
 					console.error(error);
-					response.error(error);
+					response.error('ERROR');
 				}
 			});
 		},
 		error: function(error){
 			console.error("Errore  Professional.newProfessional to getUser ");
 			console.error(error);
-			response.error(error);
+			response.error('ERROR');
 		}
 	});	
 });
