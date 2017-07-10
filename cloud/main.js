@@ -868,6 +868,7 @@ function sendAllMessage(request){
 				if(type === TYPE_NEW_REQUEST ){
 					console.log("TYPE_NEW_REQUEST");
 					if(typeCode === 10){
+						console.log("typeCode === 10");
 						// - invio email di conferma nuova richiesta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
 						//console.log("\nTYPE_NEW_REQUEST(10) - EmailTo: " + toEmail);
@@ -877,6 +878,7 @@ function sendAllMessage(request){
 						promises.push(functionSendEmailtoAdmin);	
 					}
 					else if(typeCode === 20){
+						console.log("typeCode === 20");
 						// - invio email di nuova richiesta a tutti i professionisti e all'amministratore
 						//console.log("\n ------arrayAllEmailProfessional : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
@@ -900,6 +902,13 @@ function sendAllMessage(request){
 								promises.push(functionSendEmailtoProf);
 								//send notification
 								functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
+								console.log("functionSendNotification:>  " 
+									+ " idListForms = " + JSON.stringify(idListForms) + 
+									+ " idTo = " + JSON.stringify(idTo)
+									+ " subjectEmail = " + JSON.stringify(subjectEmail)
+									+ " badge = " + JSON.stringify(badge)
+									+ " type = " + JSON.stringify(type)
+									+ " userSenderClient.id = " + JSON.stringify(userSenderClient.id));
 								promises.push(functionSendNotification);
 							}
 						}
@@ -907,6 +916,9 @@ function sendAllMessage(request){
 							functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
 							promises.push(functionSendEmailtoAdmin);	
 						}
+
+
+						console.log("arrayToEmail == " + JSON.stringify(arrayToEmail));
 					}
 				} // end type === TYPE_NEW_REQUEST
 				else if(type === TYPE_CANCELED_REQUEST){
@@ -1859,10 +1871,5 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			response.error(error);
 		
 		}
-	});
-    	
-    	
-	
-		
+	});		
 });
-
