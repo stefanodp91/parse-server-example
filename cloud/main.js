@@ -1,8 +1,20 @@
 
+
+
 //require('cloud/jobs');
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 var client = require(__dirname + '/myMailModule-1.0.0.js');
-client.initialize('sandboxd4c1fff0eef345918700b3f7763ea660.Mailgun.Org', 'key-eb5c861840c9606f6e8cdb6905e7d66b');
+// client.initialize('sandboxd4c1fff0eef345918700b3f7763ea660.Mailgun.Org', 'key-eb5c861840c9606f6e8cdb6905e7d66b');
+
+//production domain
+client.initialize('mg.rukku.it', 'key-7e6356374a29aa0f541ca9c13e7b83bd');
+
+
+//ATTENTION CHANGE FILE myMailModule-1.0.0.js AND HERE??????
+//sandbox domain
+//client.initialize('app475b8a1f8e19459d83683850f08f1643.mailgun.org', 'key-7e6356374a29aa0f541ca9c13e7b83bd');
+
+
 //Then inside of your Cloud Code function, you can use the sendEmail function to fire off some emails:
 
 
@@ -32,6 +44,7 @@ var TYPE_NEW_OFFER = "TYPE_NEW_OFFER";
 var TYPE_ACCEPTED_OFFER = "TYPE_ACCEPTED_OFFER";
 var TYPE_WELLCOME = "TYPE_WELLCOME";
 var TYPE_RECOVERY_PASSWORD = "TYPE_RECOVERY_PASSWORD";
+var TYPE_CANCELED_OFFER = "TYPE_CANCELED_OFFER";
 
 var DEFAULT_LANG = 'it-IT';
 var DEFAULT_ADMIN_EMAIL = 'admin@rukku.com';
@@ -113,6 +126,34 @@ function getListAllEmailProfessional(){
 	var myres = query.find();
 //	console.log("getListAllEmailProfessional : "+ myres);
 	return myres;
+}
+
+// decodifica la lista degli username dei professionisti (strutture) del formato:
+// var subscribersList = subscriber_0,subscriber_1,...,subscriber_i,...,subscriber_n;  
+// e restituisce la lista di sottoscrittori 
+function decodeSubscriberList(encodedSubscribersList) {
+	console.log("decodeSubscriberList");
+	"use strict";
+	// recupera la lista di professionisti (strutture) effettuando lo spit sul carattere ","
+	var decodedSubscribersList = encodedSubscribersList.split(',');
+	console.log("decodedSubscribersList == " + JSON.stringify(decodedSubscribersList));
+
+	var userQuery = new Parse.Query("_User");
+	userQuery.containedIn("username", decodedSubscribersList);
+	
+	var query = new Parse.Query("Professional");
+	query.matchesQuery('idUser', userQuery);
+ 
+	// query.find({
+ //    	success: function(results) {
+ //    		res.success("decodeSubscriberList - success: " + JSON.stringify(results));
+ //    	},
+ //    	error: function(error) {
+ //      		res.success("decodeSubscriberList - error: " + JSON.stringify(error));
+ //    	}
+ //  	});
+
+ 	return query.find();
 }
 
 function getListEmailProfessionalSentOffer(idListForms){
@@ -504,7 +545,65 @@ Parse.Cloud.define("sendNotification", function(request, response) {
 	
 });
 
-
+Parse.Cloud.define("sendNotificationTest", function(request, response) {
+    "use strict";
+	console.log("+++++++++ sendNotification TEST ++++++++++++");
+	//response.success('notification sent TEST');
+	
+    var idTo = "S2HF2Gqwsr";//request.params.idTo;
+    var alertMessage = "test";//request.params.alertMessage;
+    var idListForms = "";//request.params.idListForms;
+    var badge = parseInt(2);
+    var type = "";//request.params.type;
+    var idUserRequest = "";//request.params.idUserRequest;
+    //Set push query
+	var pushQuery = new Parse.Query(Parse.Installation);
+	//var targetUser = new Parse.User();
+	//targetUser.id = idTo;
+	var userQuery = new Parse.Query(Parse.User);
+	userQuery.equalTo("objectId", idTo);
+	pushQuery.matchesQuery("user", userQuery);
+	
+	console.log("Test PreSendPush");
+	Parse.Push.send(
+	{
+	
+		where: pushQuery,
+		data: {
+			to: idTo,
+			//t: "chat", // type
+			idListForms: idListForms,
+			badge: badge,
+			alert: alertMessage,
+			sound: "chime",
+			title: alertMessage, // android only
+			type: type,
+			idUserRequest: idUserRequest
+		}
+	},
+	
+	{
+		success: function(){
+			console.log("NOTIFICATION-SEND success!!! -> "+ idTo);
+			userQuery.first({
+				success: function(user){
+					console.log("USER TO notofication: ");
+					console.log(user);
+				},
+				error: function(error){
+					console.log("Error userQuery for notification: ");
+					console.log(error);
+				}
+			});
+			
+		},
+		error: function (error) {
+			response.error(error);
+		},	useMasterKey: true
+	});
+	response.success('notification sent');
+	
+});
 //----------------------------------------------//
 // SAVE PAYMENT
 
@@ -659,6 +758,10 @@ function sendAllMessage(request){
 	var appName = request.params.appName;
 	var idListForms = request.params.idListForms;
 	var idListOffers = request.params.idListOffers;
+	// strutture (intese come username del professionista) sottoscritte alla ricezione delle notifiche push.
+	// la lista di sottoscrizioni viene ricevuta come stringa nel formato:
+	// var subscribersList = subscriber_0,subscriber_1,...,subscriber_i,...,subscriber_n;  
+	var subscribersList = request.params.subscribersList; 
 	var arrayEmailTemplate = new Array;
 	
 	
@@ -668,6 +771,7 @@ function sendAllMessage(request){
 	console.log("appName: " + appName);
 	console.log("idListForms: " +idListForms);
 	console.log("idListOffers: " +idListOffers);
+	console.log("subscribersList: " + subscribersList);
 
 
 
@@ -711,7 +815,8 @@ function sendAllMessage(request){
 	//results4
 	if(type === TYPE_NEW_REQUEST ){
 		console.log("TYPE_NEW_REQUEST");
-		functionGetAddressesEmail = getListAllEmailProfessional();
+		// functionGetAddressesEmail = getListAllEmailProfessional();
+		functionGetAddressesEmail = decodeSubscriberList(subscribersList);
 		listFunctionsToCall.push(functionGetAddressesEmail);
 	}
 	else if(type === TYPE_CANCELED_REQUEST ){
@@ -737,29 +842,32 @@ function sendAllMessage(request){
 			var results1 = results[0];
 			//console.log("results1: ");
 			//console.log(results1);
-
+			// console.log('results1 == ' + JSON.stringify(results1));
 
 			var objectRequest = results[1];
 			//console.log("objectRequest: ");
 			//console.log(objectRequest);
+			// console.log('objectRequest == ' + JSON.stringify(objectRequest));
 			
 			var objectOffer = results[2];
 			//console.log("objectOffer: ");
 			//console.log(objectOffer );  
+			// console.log('objectOffer == ' + JSON.stringify(objectOffer));
 			
 			var results4 = results[3];
+			// console.log('results4 == ' + JSON.stringify(results4));
 			//console.log("results4: ");
 			//console.log(results4 );  
 			//------------------------------------------------------//
 			// START SET VARIABLES
 			//------------------------------------------------------//
-			// result1: 	  list email template 
-			// objectRequest: request+UserRequest
-			// objectOffer:   offer+UserResponder
-			// result4: 	  (TYPE_NEW_REQUEST)  		list Professional + IdUser  
-			//		  (TYPE_CANCELED_REQUEST) 	list Offers + IdUserResponder
-			//		  (TYPE_NEW_OFFER) 		Request + idUserResponder (bestPrice) -> (TYPE_CANCELED_REQUEST)
-			//		  (TYPE_ACCEPTED_OFFER)  = 	(TYPE_CANCELED_REQUEST)
+			// result1: 	  	list email template 
+			// objectRequest: 	request+UserRequest
+			// objectOffer:   	offer+UserResponder
+			// result4: 	  	(TYPE_NEW_REQUEST)  		list Professional + IdUser  
+			//		  			(TYPE_CANCELED_REQUEST) 	list Offers + IdUserResponder
+			//		  			(TYPE_NEW_OFFER) 		Request + idUserResponder (bestPrice) -> (TYPE_CANCELED_REQUEST)
+			//		  			(TYPE_ACCEPTED_OFFER)  = 	(TYPE_CANCELED_REQUEST)
 			var i;
 			for (i = 0; i < results1.length; i++) {
 				arrayEmailTemplate.push(results1[i]);
@@ -868,7 +976,6 @@ function sendAllMessage(request){
 				if(type === TYPE_NEW_REQUEST ){
 					console.log("TYPE_NEW_REQUEST");
 					if(typeCode === 10){
-						console.log("typeCode === 10");
 						// - invio email di conferma nuova richiesta al cliente e all'amministratore
 						toEmail = userSenderClient.get("email");
 						//console.log("\nTYPE_NEW_REQUEST(10) - EmailTo: " + toEmail);
@@ -878,7 +985,6 @@ function sendAllMessage(request){
 						promises.push(functionSendEmailtoAdmin);	
 					}
 					else if(typeCode === 20){
-						console.log("typeCode === 20");
 						// - invio email di nuova richiesta a tutti i professionisti e all'amministratore
 						//console.log("\n ------arrayAllEmailProfessional : "+arrayAllEmailTo.length);
 						var arrayToEmail = new Array;
@@ -886,29 +992,39 @@ function sendAllMessage(request){
 						arrayToEmail.push(userSenderClient.get("username"));
 						for (ii = 0; ii < arrayAllEmailTo.length; ii++) 
 						{
-							user = arrayAllEmailTo[ii].get("idUser");
+
 							var professional = arrayAllEmailTo[ii];
-							console.log(user);
-							console.log(professional);
-							console.log(professional.get("email"));
+
+							user = professional.get("idUser");
+							// console.log("user ==== " + JSON.stringify(user));
+
+							console.log("***********************************************");
+							console.log("professional == " + JSON.stringify(professional));
+							console.log("user == " + JSON.stringify(user));
+							// console.log(professional.get("email"));
 							//console.log("SendTo: "+user.get("email"));
 							//console.log("\n ------ user : "+arrayAllEmailTo[ii]+ " ---- user :"+arrayAllEmailTo[ii].get("idUser"));
 							if(arrayToEmail.indexOf(user.get("username")) === -1){
 								arrayToEmail.push(user.get("username"));
-								toEmail = professional.get("email");
-								idTo = user.id;
-								//console.log("\n ------prepare for send email : "+toEmail); 
-								functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
-								promises.push(functionSendEmailtoProf);
-								//send notification
+								// toEmail = professional.get("email");
+								// idTo = user.id;
+								// //console.log("\n ------prepare for send email : "+toEmail); 
+								// functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
+								// promises.push(functionSendEmailtoProf);
+								// //send notification
+								// functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
+								// promises.push(functionSendNotification);
+							}
+
+							toEmail = professional.get("email");
+							idTo = user.id;
+							//console.log("\n ------prepare for send email : "+toEmail); 
+							functionSendEmailtoProf = configSendEmail(idListForms,fromEmail,toEmail,subjectEmail,type,typeCode,bodyEmail);
+							promises.push(functionSendEmailtoProf);
+							//send notification
+							// manda la notifica push di nuova richiesta a tutti i professioni elegibili ad esclusione di se stesso
+							if(idTo !== userSenderClient.id) { 
 								functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
-								console.log("functionSendNotification:>  " 
-									+ " idListForms = " + JSON.stringify(idListForms) + 
-									+ " idTo = " + JSON.stringify(idTo)
-									+ " subjectEmail = " + JSON.stringify(subjectEmail)
-									+ " badge = " + JSON.stringify(badge)
-									+ " type = " + JSON.stringify(type)
-									+ " userSenderClient.id = " + JSON.stringify(userSenderClient.id));
 								promises.push(functionSendNotification);
 							}
 						}
@@ -916,9 +1032,6 @@ function sendAllMessage(request){
 							functionSendEmailtoAdmin = configSendEmail(idListForms,fromEmail,emailAdmin,subjectEmail,type,typeCode,bodyEmail);
 							promises.push(functionSendEmailtoAdmin);	
 						}
-
-
-						console.log("arrayToEmail == " + JSON.stringify(arrayToEmail));
 					}
 				} // end type === TYPE_NEW_REQUEST
 				else if(type === TYPE_CANCELED_REQUEST){
@@ -1363,9 +1476,6 @@ Parse.Cloud.define("sendMessages", function(request, response) {
 	  	console.log(error);
 	  	response.error(error);
 	});	
-
-	
-
 });
 
 
@@ -1871,5 +1981,440 @@ Parse.Cloud.define("updateUser", function(request, response) {
 			response.error(error);
 		
 		}
-	});		
+	});	
+});
+
+/*
+Parameters: 
+	professionalId (id del professionista da eliminare)
+*/	
+Parse.Cloud.define("deleteProfessionalWithId", function(request, response) {
+    //Parse.Cloud.useMasterKey();
+    console.log("DELETE PROFESSIONAL");
+    console.log(request);
+    var professionalId = request.params.professionalId;
+	
+	var Professional = Parse.Object.extend("Professional");
+	var query = new Parse.Query(Professional);
+    query.equalTo("objectId", professionalId);
+    
+    query.first({
+		success: function(professional){
+			console.log("Delete professional: " + professional.id);
+
+			professional.destroy({
+				success: function(){
+					console.log("professional destroyed");
+					response.success('SUCCESS');
+				},
+				error: function(){
+					console.log("ERROR professional destroyed");
+					response.error('ERROR');
+					
+				}, useMasterKey: true
+				
+			});
+			console.log("professional found with success");
+			
+		},
+		error: function (error) {
+			console.log("ERROR professional not found");
+			console.log(error);
+			response.error('ERROR');
+		},	useMasterKey: true
+	
+	});
+});
+
+/*
+- Valorizza a null il campo idProfessional dell'utente 
+Parameters: 
+	userId (id dell'utente)
+	prfId (id del profilo professionista)
+*/	
+Parse.Cloud.define("detachProfessionalFromUser", function(request, response) {
+    	console.log("* Users.detachProfessionalFromUser * ");
+	var that = this; 
+	
+	var userId = request.params.userId;
+	var profId = request.params.professionalId;
+	
+	var User = Parse.Object.extend("_User");
+	var query = new Parse.Query(User);
+	query.equalTo("objectId", userId);
+	query.first({
+		success: function(user){
+			console.log("success get USER:");
+			console.log(user);
+			var Professional = Parse.Object.extend("Professional");
+			var query = new Parse.Query(Professional);
+			query.equalTo("objectId", profId);
+			query.first({
+				success: function(newProf){
+					console.log("succes get PROFESSIONAL:");
+					console.log(newProf);
+					user.set("idProfessional", null);
+					user.save(null, {
+						success: function(p){
+							console.log("success Update User:");
+							console.log(p);
+
+							response.success('SUCCESS');
+							
+						},
+						error: function(user, error){
+							console.error("Errore  Users.getUser: ");
+							console.error(error);
+							response.error('ERROR');
+						
+						}, useMasterKey: true
+					});
+				},
+				error: function(error){
+					console.error("Errore  Users.addProfessional to getProfessional");
+					console.error(error);
+					response.error('ERROR');
+				}
+			});
+		},
+		error: function(error){
+			console.error("Errore  Professional.newProfessional to getUser ");
+			console.error(error);
+			response.error('ERROR');
+		}
+	});	
+});
+
+
+// aggiunge il campo "willDeletedAt" all'offerta passata come parametro.
+// questo campo viene utilizzato per impostare l'offerta come scaduta
+// in quella specifica data.
+Parse.Cloud.define('cancelOffer', function(req, res) {
+	console.log("cancelOffer: before");
+	var offerId = req.params.offerId;
+
+	// recupera l'offerta da cancellare attraverso il suo id
+ 	var query = new Parse.Query("ListOffers");
+	query.equalTo("objectId", offerId);
+
+	// query.first().then(function(result) {
+	// 	console.log("cancelOffer: get offer success");
+
+	// 	// data corrente
+	// 	var now = new Date();
+	// 	// data corrente +5 minuti
+	// 	var dateWithOffset = addMinutes(now, +5); 
+	// 	console.log("cancelOffer: addMinutes");
+
+	// 	// aggiunge un nuovo parametro all'offerta
+	// 	result.set("willDeletedAt", dateWithOffset); 
+	// 	console.log("cancelOffer: result.set");
+
+	// 	// salva l'offerta
+	// 	var savedObj = result.save();
+	// 	console.log("cancelOffer: savedObj == " + JSON.stringify(savedObj));
+	// 	return savedObj;
+
+	// 	}).then(function(offer) {
+	// 		console.log("cancelOffer: then save success");
+	// 		console.log("cancelOffer: " + JSON.stringify(offer));
+
+	// 		sendCancelOfferPush(offer);
+
+	// 		console.log("cancelOffer: success");
+	// 		res.success(offer.get("willDeletedAt"));
+	// });
+
+
+	query.first({
+    success: function(result) {
+    	console.log("cancelOffer: get offer success");
+
+    	// data corrente
+		var now = new Date();
+		// data corrente +5 minuti
+		var dateWithOffset = addMinutes(now, +5); 
+
+    	// aggiunge un nuovo parametro all'offerta
+    	result.set("willDeletedAt", dateWithOffset); 
+
+    	// salva l'offerta
+    	result.save(null, {
+	  	success: function(offer) {
+	  		console.log("cancelOffer: save success");
+
+	  		// sendCancelOfferPush(offer);
+	  		var parsedOffer = JSON.parse(JSON.stringify(offer.get("property")));
+	  		console.log("cancelOffer: " +  JSON.stringify(parsedOffer));
+
+			console.log("idListForms ==  " + offer.idListForms);
+			console.log("idUserRequest ==  " + offer.idUserRequest);
+
+			var offerId = offer.id;
+			console.log("offerId ==  " + offerId);
+
+			var idUserRequest = offer.get("idUserRequest").id
+			console.log("idUserRequest ==  " + idUserRequest);
+
+			var idListForms = offer.get("idListForms").id
+			console.log("idListForms ==  " + idListForms);
+
+			var alertTitle = parsedOffer.title;
+			console.log("alertTitle ==  " + alertTitle);
+
+			Parse.Cloud.run('sendCancelOfferPush', {
+				"idListForms" : idListForms,
+				"idUserRequest" : idUserRequest,
+				"offerId" : offerId,
+				"title" : alertTitle,
+			}).then(function(resp) {
+				console.log("cancelOffer: resp == " + JSON.stringify(resp));
+				//return(resp);
+			}, function(error) {
+				console.log(error);
+				return(error);
+			});
+
+	  		// restituisce la data di annullamento dell'offerta (comprensiva di offeset)
+	    	res.success(offer.get("willDeletedAt"));
+	  	},
+	  	error: function(error) {
+	  		console.log("cancelOffer: save error");
+		    res.success(JSON.stringify(error));
+	  	}
+		});
+    },
+    error: function(error) {
+    	console.log("cancelOffer: get offer error");
+    	res.error(JSON.stringify(error));
+    }
+  });
+});
+
+// rimuove fisicamente dal database le offerte contrassegnate 
+// come annullate. 
+// le offerte scadute vengono intese come le offerte che hanno
+// willDeletedAt < now (es. 11:11 < 12:08) 
+// dove:
+// * now è la data corrente;
+// * willDeletedAt è la data di annullamento dell'offerta;
+Parse.Cloud.define('removeCancelledOffers', function(req, res) {
+	console.log("removeCancelledOffers");
+
+	// data corrente
+ 	var now = new Date();
+
+ 	// recupera la lista di offerte da cancellare in base alla data di 
+ 	// annullamento dell'offerta.
+ 	// se la data di annullamento dell'offerta è minore della data attuale 
+ 	// allora verrà cancellata.
+ 	var query = new Parse.Query("ListOffers");
+	query.lessThan("willDeletedAt", now);
+	query.include("idListForms");
+	query.find({
+    success: function(results) {
+
+    	// console.log("results == " + JSON.stringify(results));
+
+    	var numberOfResults = results.length; 
+    	// console.log("numberOfResults == " + numberOfResults);
+
+    	for(var i = 0; i < numberOfResults; i++) {
+
+    		var currentOffer = results[i];
+    		// console.log("currentOffer== " + JSON.stringify(currentOffer));
+
+    		var currentOfferId = currentOffer.id;
+    		// console.log("currentOfferId == " + currentOfferId);
+
+    		// recupera la richiesta corrente
+    		var listForm = currentOffer.get("idListForms");
+    		// console.log("listForm == " + JSON.stringify(listForm));
+    		var listFormId = listForm.id;
+    		// console.log("listFormId == " + listFormId);
+
+    		// recupera il numero di offerte per quella richiesta
+    		var numberAnswers = listForm.get("numberAnswers");
+    		// console.log("numberAnswers == " + numberAnswers);
+    		// console.log("numberAnswersType" + typeof(numberAnswers));
+
+    		// decrementa il numero di risposte di una unità
+    		listForm.increment("numberAnswers", -1);
+
+    		// salva la richiesta
+    		listForm.save({
+				success: function(listForm) {
+					console.log("savedListForm == " + JSON.stringify(listForm));
+
+					// @TODO
+					// if(currentOffer.idUserRequest.equals(listForm.userResponder)){  
+    	// 				// "_p_idUserResponder": "_User$RjcfAKyiq4"
+    	// 				listForm.set("_p_idUserResponder", null); // azzera user responder
+    	// 				listForm.set("price", 0); // azzera user responder
+    	// 			}
+
+
+					// aggiorna lo stato se non ci sono offerte
+					if(listForm.get("numberAnswers") == 0) {
+						listForm.set("state" , "0");
+					}
+
+					listForm.save({
+						success: function() {
+							console.log("listForm saved with success");
+						},
+						error: function(error) {
+							console.log("cannot save listForm. " + JSON.stringify(error));
+						}
+					});
+
+					// console.log("listForm saved with success");
+				},
+				error: function(error) {
+					console.log("cannot save listForm. " + JSON.stringify(error));
+				}
+			});
+    	}
+
+
+    	Parse.Object.destroyAll(results).then(function() {
+            res.success("cancelled offers have been deleted successfully");
+        });
+		// res.success(JSON.stringify(results));
+    },
+    error: function(error) {
+    	res.error(JSON.stringify(error));
+    }
+  });
+});
+
+// aggiunge un offest di X minuti a una data. 
+// per sottrarre X minuti basta passare il parametro con il segno meno
+// es.
+// date = 09:42, minutes = +5  => verrà restituita la data +5 minuti, ovvero 09:47
+// date = 09:42, minutes = -5 => verrà restituita la data -5 minuti, ovvero 09:37
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}
+
+
+// function sendCancelOfferPush(offer) {
+Parse.Cloud.define("sendCancelOfferPush", function(request, response) {
+	console.log("sendCancelOfferPush");
+
+	var alertTitle = request.params.title;
+	console.log("alertTitle == " + alertTitle);
+
+	var idTo = request.params.idUserRequest;
+	// var idTo = "YVUPEjzZhz";
+	console.log("idTo == " + idTo);
+
+	var idListForms = request.params.idListForms;
+	console.log("idListForms == " + idListForms);
+
+	var offerId = request.params.offerId;
+	console.log("offerId == " + offerId);
+
+	// var alertMessage = "Il professionista " + userResponderId + " ha annullato l\'offerta per la struttura" + alertTitle + ".\nPrenota entro 5 minuti prima che l\'offerta venga annullata definitivamente!";
+	// console.log("alertMessage == " + alertMessage);
+
+	var alertMessage = "L\'offerta per la struttura" + alertTitle + " è stata annullata!.\nHai ancora 5 minuti per prenotare!!";
+	console.log("alertMessage == " + alertMessage);
+
+    var badge = parseInt("1");
+	console.log("badge == " + badge);
+
+    var type = "TYPE_CANCELED_OFFER";
+    console.log("type == " + type);
+
+
+	var pushQuery = new Parse.Query(Parse.Installation);
+	var userQuery = new Parse.Query(Parse.User);
+	userQuery.equalTo("objectId", idTo);
+	
+	pushQuery.matchesQuery("user", userQuery);
+	
+	// console.log("Test PreSendPush");
+	Parse.Push.send(
+	{
+		where: pushQuery,
+		data: {
+			to: idTo,
+			//t: "chat", // type
+			idListForms: idListForms,
+			badge: badge,
+			alert: alertMessage,
+			sound: "chime",
+			title: alertTitle, // android only
+			type: type,
+			idUserRequest: idTo,
+			idOffer : offerId
+		}
+	},
+	
+	{
+		success: function(){
+			console.log("notification to "+ idTo + " sent with success");
+			userQuery.first({
+				success: function(user){
+					console.log("USER TO notofication: ");
+					console.log(JSON.stringify(user));
+				},
+				error: function(error){
+					console.log("Error userQuery for notification: ");
+					console.log(error);
+				}
+			})
+			
+		},
+		error: function (error) {
+			response.error(error);
+		},	useMasterKey: true
+	});
+
+	response.success('notification sent');
+});
+
+Parse.Cloud.define('testParseCloudRun', function(request, response) {
+	Parse.Cloud.run('hello').then(function(resp) {
+		response.success("resp == " + JSON.stringify(resp));
+		//return(resp);
+	}, function(error) {
+		response.error("error == " + JSON.stringify(error));
+	});
+});
+
+
+Parse.Cloud.define("mandaEmail", function(request, response) {
+
+    // var Mailgun = require('mailgun');
+    // Mailgun.initialize('DOMAIN_NAME', 'API_KEY');
+
+	var Mailgun = require(__dirname + '/myMailModule-1.0.0.js');
+	// console.log(JSON.stringify(Mailgun));
+
+	Mailgun.initialize('postmaster@mg.rukku.it', 'key-7e6356374a29aa0f541ca9c13e7b83bd');
+
+    Mailgun.sendEmail({
+      // to: request.params.target,
+      // from: request.params.originator,
+      // subject: request.params.subject,
+      // text: request.params.text
+
+
+      to: "stefano.depascalis@frontiere21.it",
+      from: "mailgun@mg.rukku.it",
+      subject: "Hello",
+      text: "Testing some Mailgun awesomness!"
+
+    }, {
+      success: function(httpResponse) {
+        console.log(httpResponse);
+        response.success("response == " + JSON.stringify(Mailgun) + "||||| Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("response == " + JSON.stringify(Mailgun) + "||||| Uh oh, something went wrong");
+      }
+    });
 });
