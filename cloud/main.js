@@ -1026,6 +1026,13 @@ function sendAllMessage(request){
 							if(idTo !== userSenderClient.id) { 
 								functionSendNotification = configNotification(idListForms,idTo,subjectEmail,badge,type,userSenderClient.id);
 								promises.push(functionSendNotification);
+								console.log("functionSendNotification:>  " 
+									+ " idListForms = " + JSON.stringify(idListForms) + 
+									+ " idTo = " + JSON.stringify(idTo)
+									+ " subjectEmail = " + JSON.stringify(subjectEmail)
+									+ " badge = " + JSON.stringify(badge)
+									+ " type = " + JSON.stringify(type)
+									+ " userSenderClient.id = " + JSON.stringify(userSenderClient.id));
 							}
 						}
 						if(arrayToEmail.length>0){
